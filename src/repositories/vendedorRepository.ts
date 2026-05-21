@@ -1,0 +1,50 @@
+import { Vendedor } from "../models/Vendedor";
+import { NotaFiscal } from "../models/NotaFiscal";
+
+export class VendedorRepository {
+    private static instance: VendedorRepository;
+    private vendedorLista: Vendedor[] = [];
+    private notasLista: NotaFiscal[] = [];
+
+    private constructor() {}
+
+    //cria um novo vendedor
+    public static getInstance(): VendedorRepository {
+        if (!this.instance) {
+            this.instance = new VendedorRepository();
+        }
+        return this.instance;
+    }
+
+    //listar todos os vendedores
+    listaVendedores(): Vendedor[]{
+        return this.vendedorLista;
+    }
+
+    //retorna vendedor por id
+    filtraVendedorPorId(id: number): Vendedor | undefined {
+        return this.vendedorLista.find(vendedor => vendedor.id_vendedor === id);
+    }
+
+    //cadastra novo vendedor
+    insereVendedor(vendedor: Vendedor) {
+        this.vendedorLista.push(vendedor);
+    }
+
+    //atualiza vendedor
+    atualizaVendedor(id: number, vendedor: Vendedor) {
+        const indice = this.vendedorLista.findIndex(vendedor => vendedor.id_vendedor === id);
+        this.vendedorLista[indice] = vendedor;
+    }
+
+    //remove um vendedor
+    removeVendedor(id: number) {
+        const indice = this.vendedorLista.findIndex(vendedor => vendedor.id_vendedor === id);
+        return this.vendedorLista.splice(indice, 1);
+    }
+
+    //lista todas as notas fiscais de um vendedor
+    listaNotasFiscais(id: number): NotaFiscal[] | undefined {
+        return this.notasLista.filter(nota => nota.id_vendedor === id);
+    }
+}

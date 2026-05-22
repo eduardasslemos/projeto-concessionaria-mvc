@@ -13,6 +13,10 @@ export class CarroRepository{
     buscarPorId(id:number): Carro | undefined{
         return this.carros.find(carro=>carro.id_carro ===id);
     }
+    //Busca o carro por placa para fazer a checagem no service
+    buscaPorPlaca(placa: string): Carro | undefined{
+        return this.carros.find(carro=>carro.placa ===placa)
+    }
 
     //Salva o carro cadastrado
     cadastrarCarro(carros: Carro): void{
@@ -20,9 +24,10 @@ export class CarroRepository{
     }
 
     //Atualiza os dados do carro
-    atualizarCarro(id: number, carro: Carro){
+    atualizarCarro(id: number, carro: Carro): Carro{
         const indice = this.carros.findIndex(carro=>carro.id_carro ===id );
         this.carros[indice] = carro;
+        return this.carros[indice];
     }
 
     //Remove o carro por id

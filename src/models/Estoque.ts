@@ -13,10 +13,9 @@ export class Estoque {
         this.quantidade = quantidade
         this.localizacao_patio = localizacao_patio
         this.data_entrada = data_entrada
-
     }
 
     private geraId(): number {
         return Date.now()
     }
-} ""
+}

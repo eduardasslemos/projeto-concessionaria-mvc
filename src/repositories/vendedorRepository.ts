@@ -1,14 +1,15 @@
 import { Vendedor } from "../models/Vendedor";
 import { NotaFiscal } from "../models/NotaFiscal";
+import { NotaFiscalRepository } from "./notaFiscalRepository";
 
 export class VendedorRepository {
     private static instance: VendedorRepository;
     private vendedorLista: Vendedor[] = [];
-    private notasLista: NotaFiscal[] = [];
+
+    private notaFiscalRepo = NotaFiscalRepository.getInstance();
 
     private constructor() {}
 
-    //cria um novo vendedor
     public static getInstance(): VendedorRepository {
         if (!this.instance) {
             this.instance = new VendedorRepository();
@@ -43,8 +44,7 @@ export class VendedorRepository {
         return this.vendedorLista.splice(indice, 1);
     }
 
-    //lista todas as notas fiscais de um vendedor
-    listaNotasFiscais(id: number): NotaFiscal[] | undefined {
-        return this.notasLista.filter(nota => nota.id_vendedor === id);
+    listaNotasFiscais(id: number): NotaFiscal[] {
+        return this.notaFiscalRepo.listaNotaFiscal().filter(nota => nota.id_vendedor === id);
     }
 }

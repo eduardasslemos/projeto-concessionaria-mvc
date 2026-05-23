@@ -41,9 +41,10 @@ export class VendedorRepository {
     //remove um vendedor
     removeVendedor(id: number) {
         const indice = this.vendedorLista.findIndex(vendedor => vendedor.id_vendedor === id);
-        return this.vendedorLista.splice(indice, 1);
+        this.vendedorLista.splice(indice, 1);
     }
 
+    //listar notas fiscais
     listaNotasFiscais(id: number): NotaFiscal[] {
         return this.notaFiscalRepo.listaNotaFiscal().filter(nota => nota.id_vendedor === id);
     }

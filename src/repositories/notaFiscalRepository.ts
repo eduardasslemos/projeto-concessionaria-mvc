@@ -5,7 +5,8 @@ import { EstoqueRepository } from "./estoqueRepository";
 export class NotaFiscalRepository {
     private static instance: NotaFiscalRepository;
     private notasLista: NotaFiscal[] = [];
-    private estoqueLista: Estoque[] = [];
+    
+    private estoqueRepo = EstoqueRepository.getInstance();
 
     private constructor() {}
 

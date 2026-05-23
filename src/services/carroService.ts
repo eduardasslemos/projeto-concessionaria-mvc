@@ -3,9 +3,12 @@ import{Estoque} from "../models/Estoque";
 import{NotaFiscal} from "../models/NotaFiscal";
 import{CarroRepository} from "../repositories/carroRepository";
 import{EstoqueRepository} from ;
+import{NotaFiscalRepository} from "../repositories/notaFiscalRepository";
 
 export class CarroService{
     CarroRepository = new CarroRepository();
+    NotaFiscalRepository = NotaFiscalRepository.getInstance();
+    
 
     listar(): Carro[]{
         return this.CarroRepository.listar();
@@ -86,7 +89,7 @@ export class CarroService{
             throw new Error("Não se pode remover carro com estoque vinculado");
         }
 
-        const notaVinculada = this.notaRepository.buscarPorCarro(id);
+        const notaVinculada = this.NotaFiscalRepository.filtraNotaPorId(id);
 
         if(notaVinculada){
             throw new Error("Não se pode remover carro com nota fiscal vinculado");

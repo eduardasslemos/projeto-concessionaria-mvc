@@ -69,7 +69,9 @@ export class NotaFiscalService {
 
         const estoque = this.estoqueRepository.listar().find(estoque => estoque.id_carro === id_carro);
 
-        if(!estoque || estoque.quantidade <= 0){
+        if(!estoque){
+            throw new Error ("O estoque do id do carro deve existir");
+        } else if(estoque.quantidade <= 0){
             throw new Error ("O estoque do id do carro deve ser maior que 0");
         }
 

@@ -1,7 +1,6 @@
 import { Cliente } from "../models/Cliente";
 import { ClienteRepository } from "../repositories/clienteRepository";
 import { NotaFiscal } from "../models/NotaFiscal";
-import { parse } from "node:path";
 
 export class ClienteService {
     clienteRepository = ClienteRepository.getInstance();

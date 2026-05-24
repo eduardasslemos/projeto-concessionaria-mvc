@@ -6,7 +6,7 @@ export class Cliente {
     email?: string; // nao obrigatorio 
     cidade?: string;// nao obrigatorio, verificar se é assim.
 
-    constructor(nome: string, cpf: string, telefone: string, email: string, cidade: string){
+    constructor(nome: string, cpf: string, telefone: string, email?: string, cidade?: string){
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;

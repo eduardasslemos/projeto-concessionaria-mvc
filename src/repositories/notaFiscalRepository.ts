@@ -30,7 +30,10 @@ export class NotaFiscalRepository {
     //cadastra nova nota fiscal 
     insereNotaFiscal(notaFiscal: NotaFiscal) {
         this.notasLista.push(notaFiscal);
-        const indice = this.estoqueLista.findIndex(estoque => estoque.id_carro === notaFiscal.id_carro);
-        this.estoqueLista.splice(indice, 1);
+    }
+
+    //retorna nota fiscal por numero
+    filtraNotaPorNumero(numero_nota: string): NotaFiscal | undefined {
+        return this.notasLista.find(nota => nota.numero_nota === numero_nota);
     }
 }

@@ -1,13 +1,12 @@
 import{Carro} from "../models/Carro";
-import{Estoque} from "../models/Estoque";
-import{NotaFiscal} from "../models/NotaFiscal";
 import{CarroRepository} from "../repositories/carroRepository";
-import{EstoqueRepository} from ;
+import {EstoqueRepository} from "../repositories/estoqueRepository";
 import{NotaFiscalRepository} from "../repositories/notaFiscalRepository";
 
 export class CarroService{
     CarroRepository = new CarroRepository();
-    NotaFiscalRepository = NotaFiscalRepository.getInstance();
+    estoqueRepository = EstoqueRepository.getInstance();
+    notaFiscalRepository = NotaFiscalRepository.getInstance();
     
 
     listar(): Carro[]{
@@ -17,6 +16,14 @@ export class CarroService{
     buscarPorId(id: number): Carro | undefined{
         return this.CarroRepository.buscarPorId(id);
     }
+
+    listarDisponiveis(): Carro[] {
+        const estoques =this.estoqueRepository.listarDisponiveis();
+        const carrosDisponiveis =estoques.map(estoque => {
+            return this.CarroRepository.buscarPorId(estoque.id_carro);
+        });
+        return carrosDisponiveis.filter(carro => carro !== undefined) as Carro[];
+}
 
     CadastrarCarro(data:any): Carro{
         if (!data.marca|| !data.modelo || !data.ano || !data.placa || !data.preco || !data.preco) {
@@ -85,11 +92,11 @@ export class CarroService{
 
         const estoqueVinculado = this.estoqueRepository.buscarPorCarro(id);
 
-        if(estoqueVinculado){
+        if(estoqueVinculado && estoqueVinculado.quantidade > 0){
             throw new Error("Não se pode remover carro com estoque vinculado");
         }
-
-        const notaVinculada = this.NotaFiscalRepository.filtraNotaPorId(id);
+        //Revisar isso com a duda
+        const notaVinculada = this.notaFiscalRepository.filtraNotaPorId(id);
 
         if(notaVinculada){
             throw new Error("Não se pode remover carro com nota fiscal vinculado");

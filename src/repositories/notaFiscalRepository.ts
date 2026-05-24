@@ -1,6 +1,6 @@
 import { NotaFiscal } from "../models/NotaFiscal";
 import { Estoque } from "../models/Estoque";
-import { EstoqueRepository } from "./estoqueRepository";
+import { EstoqueRepository } from "../repositories/estoqueRepository";
 
 export class NotaFiscalRepository {
     private static instance: NotaFiscalRepository;

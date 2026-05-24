@@ -4,6 +4,15 @@ export class CarroRepository{
     private static instance : CarroRepository ;
     private carros : Carro [] = [];
 
+    public static getInstance(): CarroRepository {
+
+    if (!CarroRepository.instance) {
+        CarroRepository.instance =new CarroRepository();
+    }
+
+    return CarroRepository.instance;
+}
+
     //Lista todos os carros cadastrados
     listar(): Carro[]{
         return this.carros;

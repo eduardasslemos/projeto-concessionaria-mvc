@@ -49,7 +49,7 @@ export class NotaFiscalService {
             throw new Error ("O valor total deve ser maior que zero");
         }
 
-        const clienteId = this.clienteRepository.buscarPorId(id_cliente);
+        const clienteId = this.clienteRepository.buscarClientePorId(id_cliente);
 
         if(!clienteId){
             throw new Error ("O id do cliente deve existir");

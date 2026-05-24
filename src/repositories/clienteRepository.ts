@@ -19,31 +19,35 @@ export class ClienteRepository {
 
     //Listar clientes 
 
-    listar(): Cliente[]{
+    listarCliente(): Cliente[]{
         return this.cliente;
     }
 
     //Buscar por id
-    buscarPorId(id:number) : Cliente | undefined{
+    buscarClientePorId(id:number) : Cliente | undefined{
         return this.cliente.find(cliente=>cliente.id_cliente===id);
+    }
+    //Verfica duplicidade no cpf
+    verficarClientePorCpf(cpf: string): Cliente | undefined {
+        return this.cliente.find(cliente => cliente.cpf === cpf);
     }
 
     //Cadastrar cliente 
 
-    cadastraCliente(cliente : Cliente): void{
+    cadastrarCliente(cliente : Cliente): void{
         this.cliente.push(cliente);
     }
 
     //Atualizar dados do cliente
 
-    atualizarDados(id: number, cliente: Cliente){
+    atualizarDadosCliente(id: number, cliente: Cliente){
         const indice = this.cliente.findIndex(cliente=>cliente.id_cliente ===id);
         this.cliente[indice] = cliente;
     }
 
-    //Remove cliente (sem nota fiscal) // fazer isso em outra parte (service)
+    //Remove cliente
 
-    removeCliente(id: number, cliente: Cliente){
+    removeCliente(id: number){
         const indice = this.cliente.findIndex(cliente=>cliente.id_cliente === id);
         if(indice === -1){
             return undefined
@@ -52,9 +56,8 @@ export class ClienteRepository {
     }
 
     //listar todas notas fiscais de um cliente
-
-    listarNotas(id: number): NotaFiscal[] | undefined {       
-    return this.notaFiscalRepository.listaNotaFiscal().filter(nota => nota.id_cliente === id);
-}
+    listarNotasCliente(id: number): NotaFiscal[] {       
+        return this.notaFiscalRepository.listaNotaFiscal().filter(nota => nota.id_cliente === id);
+    }
 
 }

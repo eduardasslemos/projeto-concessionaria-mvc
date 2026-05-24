@@ -3,8 +3,8 @@ export class Cliente {
     nome: string;
     cpf: string;
     telefone: string;
-    email: string;
-    cidade: string;
+    email?: string; // nao obrigatorio 
+    cidade?: string;// nao obrigatorio, verificar se é assim.
 
     constructor(nome: string, cpf: string, telefone: string, email: string, cidade: string){
         this.nome = nome;

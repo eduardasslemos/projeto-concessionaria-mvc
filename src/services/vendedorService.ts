@@ -5,7 +5,7 @@ import { NotaFiscal } from "../models/NotaFiscal";
 export class VendedorService {
     vendedorRepository: VendedorRepository = VendedorRepository.getInstance();
 
-    //listar todos os vendedores
+    //lista todos os vendedores
     listaVendedores(): Vendedor[]{
         return this.vendedorRepository.listaVendedores();
     }
@@ -20,9 +20,21 @@ export class VendedorService {
     //cadastra novo vendedor
     cadastrarVendedor (vendedorData: any): Vendedor {
         const {nome, matricula, comissao_percentual} = vendedorData;
+
         if (!nome || !matricula || !comissao_percentual) {
-            throw new Error ("Informacoes incompletas");
+            throw new Error ("Vendedor requer nome, matrícula e percentual da comissão");
         }
+
+        if(comissao_percentual < 0 || comissao_percentual > 30){
+            throw new Error ("Percentual da comissão deve ser um número positivo entre 0 e 30");
+        }
+
+        const vendedorExistente = this.vendedorRepository.filtraVendedorPorMatricula(matricula);
+
+        if(vendedorExistente){
+            throw new Error ("Já existe um vendedor com essa matrícula");
+        }
+
         const novoVendedor = new Vendedor(nome, matricula, comissao_percentual);
         this.vendedorRepository.insereVendedor(novoVendedor);
         return novoVendedor;
@@ -34,13 +46,13 @@ export class VendedorService {
         const vendedorExistente = this.vendedorRepository.filtraVendedorPorId(idNumber);
 
         if (!vendedorExistente) {
-            throw new Error("Vendedor nao encontrado");
+            throw new Error("Vendedor não encontrado");
         }
 
         const {nome, matricula, comissao_percentual} = vendedorData;
 
         if (!nome || !matricula || !comissao_percentual) {
-            throw new Error("Informacoes incompletas");
+            throw new Error("Vendedor requer nome, matrícula e percentual da comissão");
         }
 
         const vendedorAtualizado = new Vendedor(nome, matricula, comissao_percentual);
@@ -52,10 +64,17 @@ export class VendedorService {
 
     //remove um vendedor
     removeVendedores(id:any) {
+        const idNumber: number = parseInt(id, 10);
+        const notas = this.vendedorRepository.listaNotasFiscais(idNumber);
+
+        if(notas.length > 0){
+            throw new Error("O vendedor possui notas fiscais vinculadas a ele e não pode ser excluído");
+        }
+
         this.vendedorRepository.removeVendedor(id);
     }
 
-    //listar notas fiscais
+    //lista notas fiscais
     listaNotasFiscais(id: any): NotaFiscal[]{
         return this.vendedorRepository.listaNotasFiscais(id);
     }

@@ -17,7 +17,7 @@ export class VendedorRepository {
         return this.instance;
     }
 
-    //listar todos os vendedores
+    //lista todos os vendedores
     listaVendedores(): Vendedor[]{
         return this.vendedorLista;
     }
@@ -44,8 +44,13 @@ export class VendedorRepository {
         this.vendedorLista.splice(indice, 1);
     }
 
-    //listar notas fiscais
+    //lista notas fiscais
     listaNotasFiscais(id: number): NotaFiscal[] {
         return this.notaFiscalRepo.listaNotaFiscal().filter(nota => nota.id_vendedor === id);
+    }
+
+    //retorna vendedor por matricula
+    filtraVendedorPorMatricula(matricula: string): Vendedor | undefined {
+        return this.vendedorLista.find(vendedor => vendedor.matricula === matricula);
     }
 }

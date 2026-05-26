@@ -11,7 +11,7 @@ export class CarroRepository{
     }
 
     return CarroRepository.instance;
-}
+    }
 
     //Lista todos os carros cadastrados
     listar(): Carro[]{

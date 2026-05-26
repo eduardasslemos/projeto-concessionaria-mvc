@@ -96,10 +96,12 @@ export class CarroService{
             throw new Error("Não se pode remover carro com estoque vinculado");
         }
         //Revisar isso com a duda
-        const notaVinculada = this.notaFiscalRepository.filtraNotaPorId(id);
+        const notas = this.notaFiscalRepository.listaNotaFiscal();
+
+        const notaVinculada = notas.find(nota => nota.id_carro === id);
 
         if(notaVinculada){
-            throw new Error("Não se pode remover carro com nota fiscal vinculado");
+            throw new Error("Não se pode remover carro com nota fiscal vinculada");
         }
 
         return this.CarroRepository.removerCarro(id);

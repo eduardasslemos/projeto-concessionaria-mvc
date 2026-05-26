@@ -11,7 +11,7 @@ export class EstoqueRepository {
     }
 
     return EstoqueRepository.instance;
-}
+    }
 
     //Lista todos os registros de estoque
     listar(): Estoque[] {
@@ -42,6 +42,23 @@ export class EstoqueRepository {
         const indice =this.estoque.findIndex(estoque => estoque.id_estoque === id);
         this.estoque[indice] = dados;
         return this.estoque[indice];
+    }
+
+    //Diminui 1 da quantidade do estoque quando buscado por carro
+    decrementarQuantidade(id_carro: number): Estoque {
+
+    const estoque = this.buscarPorCarro(id_carro);
+
+    if (!estoque) {
+        throw new Error("Estoque não encontrado para esse carro");
+    }
+
+    if (estoque.quantidade <= 0) {
+        throw new Error("Estoque insuficiente");
+    }
+
+    estoque.quantidade--;
+    return estoque;
     }
 
     //Remove estoque

@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import { ClienteService } from "../services/clienteService";
 
-export class ClienteController{
-     private clienteService = new ClienteService();
+     const clienteService = new ClienteService();
 
     //listar clientes
-    listarCliente(req: Request, res: Response): void {
+    export function listarCliente(req: Request, res: Response): void {
         try {
-            const cliente = this.clienteService.listarCliente();
+            const cliente = clienteService.listarCliente();
 
             if(cliente.length === 0){
                 res.status(404).json({
@@ -16,9 +15,10 @@ export class ClienteController{
                 return;
             }
 
-            res.status(200).json({
-                mensagem : "Clientes encontrados com sucesso!",
-                cliente: cliente
+            res.status(200).json(
+            {
+            mensagem : "Clientes encontrados com sucesso!",
+            cliente: cliente
             }
             );
         } catch (error: any) {
@@ -26,11 +26,11 @@ export class ClienteController{
         }   
     }
     //buscar cliente por id
-    buscarPorId (req: Request, res: Response): void {
+    export function buscarPorId (req: Request, res: Response): void {
 
         try {
             const id = Number(req.params.id);
-            const clienteId = this.clienteService.buscarClienteId(id);
+            const clienteId = clienteService.buscarClienteId(id);
 
             if (!clienteId) {
                 res.status(404).json({
@@ -38,9 +38,10 @@ export class ClienteController{
                 });
                 return;
             }
-            res.status(200).json({
-                mensagem: "Cliente encontrado com sucesso!",
-                cliente: clienteId
+            res.status(200).json(
+            {
+            mensagem: "Cliente encontrado com sucesso!",
+            cliente: clienteId
             }
             );
         } catch (error: any) {
@@ -48,10 +49,10 @@ export class ClienteController{
         }
     }
     //cadastrar cliente 
-    cadastrarCliente(req: Request, res: Response): void {
-        try {
-            const novoCliente = this.clienteService.cadastrarCliente(req.body);
-            res.status(201).json({
+    export function cadastrarCliente(req: Request, res: Response): void {
+    try {
+        const novoCliente = clienteService.cadastrarCliente(req.body);
+        res.status(201).json({
             mensagem: "Cliente cadastrado com sucesso!",
             cliente: novoCliente
         });
@@ -62,31 +63,32 @@ export class ClienteController{
         }
         res.status(400).json({ message: error.message });
     }
-  }
+    }
+
     //atualizar cliente
-    atualizarCliente(req: Request, res: Response): void {
+    export function atualizarCliente(req: Request, res: Response): void {
         try {
             const id = Number(req.params.id);
-            const clienteAtualizado = this.clienteService.atualizarCliente(id, req.body);
+            const clienteAtualizado = clienteService.atualizarCliente(id, req.body);
             res.status(200).json({
                 mensagem: "Cliente atualizado com sucesso!",
                 cliente: clienteAtualizado
             });
         } catch (error: any) {
             if (error.message === "O cliente não foi encontrado") {
-                res.status(404).json({ message: error.message });
+                res.status(404).json({message: error.message});
                 return;
             }
-            res.status(400).json({ message: error.message });
+            res.status(400).json({message: error.message});
         }
 
     }
 
     //remover cliente
-    removerCliente(req: Request, res: Response): void {
+    export function removerCliente(req: Request, res: Response): void {
         try {
             const id = Number(req.params.id);
-            const clienteRemovido = this.clienteService.removerCliente(id);
+            const clienteRemovido = clienteService.removerCliente(id);
             res.status(200).json({
                 mensagem: "Cliente removido com sucesso!",
                 cliente: clienteRemovido
@@ -101,11 +103,11 @@ export class ClienteController{
     }
 
     //listar notas fiscais de um cliente
-    listarNotasCliente(req: Request, res: Response): void {
+    export function listarNotasCliente(req: Request, res: Response): void {
         try{
             const id = Number(req.params.id);
 
-            const cliente = this.clienteService.buscarClienteId(id);
+            const cliente = clienteService.buscarClienteId(id);
 
             if(!cliente){
                 res.status(404).json({
@@ -114,7 +116,7 @@ export class ClienteController{
                 return;
             }
 
-            const notasFiscais = this.clienteService.listarNotasCliente(id);
+            const notasFiscais = clienteService.listarNotasCliente(id);
             res.status(200).json({
                 mensagem: "Notas fiscais do cliente encontradas com sucesso!",
                 notasFiscais: notasFiscais
@@ -124,4 +126,3 @@ export class ClienteController{
         }
 
     }
-}

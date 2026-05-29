@@ -46,19 +46,10 @@ export class EstoqueRepository {
 
     //Diminui 1 da quantidade do estoque quando buscado por carro
     decrementarQuantidade(id_carro: number): Estoque {
+        const estoque = this.buscarPorCarro(id_carro)!;
 
-    const estoque = this.buscarPorCarro(id_carro);
-
-    if (!estoque) {
-        throw new Error("Estoque não encontrado para esse carro");
-    }
-
-    if (estoque.quantidade <= 0) {
-        throw new Error("Estoque insuficiente");
-    }
-
-    estoque.quantidade--;
-    return estoque;
+        estoque.quantidade = estoque.quantidade - 1;
+        return estoque;
     }
 
     //Remove estoque

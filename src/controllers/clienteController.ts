@@ -26,7 +26,7 @@ import { ClienteService } from "../services/clienteService";
         }   
     }
     //buscar cliente por id
-    export function buscarPorId (req: Request, res: Response): void {
+    export function buscarClientePorId (req: Request, res: Response): void {
 
         try {
             const id = Number(req.params.id);

@@ -41,7 +41,7 @@ export class VendedorRepository {
     //remove um vendedor
     removeVendedor(id: number) {
         const indice = this.vendedorLista.findIndex(vendedor => vendedor.id_vendedor === id);
-        this.vendedorLista.splice(indice, 1);
+        this.vendedorLista.splice(indice, 1)[0];
     }
 
     //lista notas fiscais

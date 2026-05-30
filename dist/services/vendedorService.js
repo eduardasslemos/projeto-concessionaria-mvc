@@ -12,7 +12,6 @@ class VendedorService {
     //retorna vendedor por id
     consultarVendedorId(id) {
         const idNumber = parseInt(id, 10);
-        console.log(id);
         return this.vendedorRepository.filtraVendedorPorId(idNumber);
     }
     //cadastra novo vendedor

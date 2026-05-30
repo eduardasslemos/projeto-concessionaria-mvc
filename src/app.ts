@@ -27,8 +27,8 @@ app.get("/api/vendedores/notas/:id",listaNotas);
 
 //Rotas carros
 app.get("/api/carros",listarCarros);
-app.get("/api/carros/:id",buscarCarroPorId);
 app.get("/api/carros/disponiveis",listarDisponiveis);
+app.get("/api/carros/:id",buscarCarroPorId);
 app.post("/api/carros",cadastrarCarro);
 app.put("/api/carros/:id",atualizarCarro);
 app.delete("/api/carros/:id",removerCarro);

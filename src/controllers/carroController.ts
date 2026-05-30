@@ -23,8 +23,6 @@ export function listarDisponiveis(req: Request, res: Response): void {
     try {
         const carros = carroService.listarDisponiveis();
 
-        res.status(200).json(carros);
-
         if (!carros || carros.length === 0) {
             res.status(422).json({
                 message: "Nenhum carro disponível em estoque."
@@ -32,8 +30,10 @@ export function listarDisponiveis(req: Request, res: Response): void {
             return;
         }
 
+        res.status(200).json(carros);
+
     } catch (error: any) {
-            res.status(400).json({
+        res.status(400).json({
             message: error.message
         });
     }

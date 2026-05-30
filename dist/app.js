@@ -28,8 +28,8 @@ app.delete("/api/vendedores/:id", vendedorController_1.removeVendedor);
 app.get("/api/vendedores/notas/:id", vendedorController_1.listaNotas);
 //Rotas carros
 app.get("/api/carros", carroController_1.listarCarros);
-app.get("/api/carros/:id", carroController_1.buscarCarroPorId);
 app.get("/api/carros/disponiveis", carroController_1.listarDisponiveis);
+app.get("/api/carros/:id", carroController_1.buscarCarroPorId);
 app.post("/api/carros", carroController_1.cadastrarCarro);
 app.put("/api/carros/:id", carroController_1.atualizarCarro);
 app.delete("/api/carros/:id", carroController_1.removerCarro);

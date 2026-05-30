@@ -24,13 +24,13 @@ function listarCarros(req, res) {
 function listarDisponiveis(req, res) {
     try {
         const carros = carroService.listarDisponiveis();
-        res.status(200).json(carros);
         if (!carros || carros.length === 0) {
             res.status(422).json({
                 message: "Nenhum carro disponível em estoque."
             });
             return;
         }
+        res.status(200).json(carros);
     }
     catch (error) {
         res.status(400).json({

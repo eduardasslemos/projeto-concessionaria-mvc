@@ -1,5 +1,4 @@
 export class Carro {
-
     id_carro: number
     marca: string
     modelo: string

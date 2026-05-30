@@ -9,8 +9,6 @@ const app = express();
 const PORT = process.env.PORT ?? 3000;
 app.use(express.json());
 
-
-
 //Rotas clientes
 app.get("/api/clientes",listarCliente);
 app.get("/api/clientes/:id", buscarClientePorId);

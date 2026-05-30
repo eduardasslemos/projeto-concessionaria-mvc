@@ -88,6 +88,16 @@ import { ClienteService } from "../services/clienteService";
     export function removerCliente(req: Request, res: Response): void {
         try {
             const id = Number(req.params.id);
+
+            const clientePesquisado = clienteService.buscarClienteId(id);
+
+            if(!clientePesquisado){
+                res.status(404).json({
+                    mensagem: "Cliente não encontrado"
+                });
+                return;
+            }
+
             const clienteRemovido = clienteService.removerCliente(id);
             res.status(200).json({
                 mensagem: "Cliente removido com sucesso!",

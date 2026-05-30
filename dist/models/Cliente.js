@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Cliente = void 0;
+class Cliente {
+    id_cliente;
+    nome;
+    cpf;
+    telefone;
+    email;
+    cidade;
+    constructor(nome, cpf, telefone, email, cidade) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.email = email;
+        this.cidade = cidade;
+        this.id_cliente = this.geraId();
+    }
+    geraId() {
+        return Date.now();
+    }
+}
+exports.Cliente = Cliente;

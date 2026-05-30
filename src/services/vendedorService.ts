@@ -13,7 +13,6 @@ export class VendedorService {
     //retorna vendedor por id
     consultarVendedorId (id: any): Vendedor | undefined {
         const idNumber: number = parseInt(id, 10);
-        console.log(id);
         return this.vendedorRepository.filtraVendedorPorId(idNumber);
     }
 

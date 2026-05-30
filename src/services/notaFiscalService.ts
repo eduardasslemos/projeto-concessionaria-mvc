@@ -20,7 +20,6 @@ export class NotaFiscalService {
     //retorna nota fiscal por id
     filtraNotaPorId(id: any): NotaFiscal | undefined {
         const idNumber: number = parseInt(id, 10);
-        console.log(id);
         return this.notaFiscalRepository.filtraNotaPorId(idNumber);
     }
 

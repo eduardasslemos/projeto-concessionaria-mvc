@@ -24,7 +24,7 @@ app.get("/api/vendedores",listaVendedores);
 app.get("/api/vendedores/:id",pesquisarVendedorPorId);
 app.post("/api/vendedores",cadastrarVendedor);
 app.put("/api/vendedores/:id",atualizaVendedor);
-app.delete("/api/vendedores",removeVendedor);
+app.delete("/api/vendedores/:id",removeVendedor);
 app.get("/api/vendedores/notas/:id",listaNotas);
 
 //Rotas carros
@@ -45,7 +45,7 @@ app.delete("/api/estoque/:id", removerEstoque);
 
 //Rotas notas
 app.get("/api/notas",listaNotasFiscais);
-app.get("/api/notas/id:",pesquisarNotaPorId);
+app.get("/api/notas/:id",pesquisarNotaPorId);
 app.post("/api/notas",cadastrarNotaFiscal);
 
 app.listen(PORT, () => console.log(`API rodando na URL: http://localhost:${PORT}`));

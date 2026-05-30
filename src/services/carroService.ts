@@ -4,7 +4,7 @@ import {EstoqueRepository} from "../repositories/estoqueRepository";
 import{NotaFiscalRepository} from "../repositories/notaFiscalRepository";
 
 export class CarroService{
-    CarroRepository = new CarroRepository();
+    CarroRepository: CarroRepository = CarroRepository.getInstance();
     estoqueRepository = EstoqueRepository.getInstance();
     notaFiscalRepository = NotaFiscalRepository.getInstance();
     

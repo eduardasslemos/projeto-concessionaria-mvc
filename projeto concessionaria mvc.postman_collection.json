@@ -1,0 +1,675 @@
+{
+  "info": {
+    "_postman_id": "5ca2eadb-9f42-4392-a569-704ed46d0c7c",
+    "name": "projeto concessionaria mvc",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54272958",
+    "_collection_link": "https://go.postman.co/collection/54272958-5ca2eadb-9f42-4392-a569-704ed46d0c7c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "clientes",
+      "item": [
+        {
+          "name": "listarCliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "buscarClientePorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/clientes/1780169417976",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "clientes",
+                "1780169417976"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cadastrarCliente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"João da Silva\",\r\n    \"cpf\": \"123.456.789-00\" ,\r\n    \"telefone\": \"(11) 99999-0000\",\r\n    \"email\": \"joao@email.com\",\r\n    \"cidade\": \"São Paulo\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atualizarCliente",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"João da Silva\",\r\n    \"cpf\": \"123.456.789-00\" ,\r\n    \"telefone\": \"(11) 99999-0000\",\r\n    \"email\": \"joao@email.com\",\r\n    \"cidade\": \"Boituva\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/clientes/1780169417976",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "clientes",
+                "1780169417976"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "removerCliente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/clientes/1780170608078",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "clientes",
+                "1780170608078"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listaNotasCliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/clientes/notas/1780169417976",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "clientes",
+                "notas",
+                "1780169417976"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "vendedores",
+      "item": [
+        {
+          "name": "listarVendedor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/vendedores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "vendedores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "pesquisarVendedorPorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/vendedores/1780169095673",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "vendedores",
+                "1780169095673"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cadastrarVendedor",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Ana Souza\",\r\n    \"matricula\": \"VND-001\",\r\n    \"comissao_percentual\": 5.5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/vendedores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "vendedores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atualizarVendedor",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n    \"nome\": \"Ana Souza Lemos\",\r\n    \"matricula\": \"VND-001\",\r\n    \"comissao_percentual\": 5.5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/vendedores/1780169303957",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "vendedores",
+                "1780169303957"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "removerVendedor",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/vendedores/1780169125892",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "vendedores",
+                "1780169125892"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listaNotas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/vendedores/notas/1780169303957",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "vendedores",
+                "notas",
+                "1780169303957"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "carros",
+      "item": [
+        {
+          "name": "listarCarros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/carros",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "carros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listarCarrosDisponiveis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/carros",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "carros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "buscarCarroPorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/carros/1780160166449",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "carros",
+                "1780160166449"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cadastrarCarro",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"marca\": \"Toyota\",\r\n    \"modelo\": \"Corolla\",\r\n    \"ano\": 2024,\r\n    \"placa\": \"ABC-12354,\r\n    \"preco\": 110000.00,\r\n    \"cor\": \"Prata\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/carros",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "carros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atualizarCarro",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"marca\": \"Toyota\",\r\n    \"modelo\": \"Corolla\",\r\n    \"ano\": 2025,\r\n    \"placa\": \"ABC-1234\",\r\n    \"preco\": 110000.00,\r\n    \"cor\": \"Prata\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/carros/1780099488081",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "carros",
+                "1780099488081"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "removerCarro",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/carros/1780099755636",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "carros",
+                "1780099755636"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "estoque",
+      "item": [
+        {
+          "name": "listarEstoque",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/estoque",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "buscarEstoquePorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/estoque/1780099488081",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "estoque",
+                "1780099488081"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "buscarPorCarro",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/carros/1780100150611",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "carros",
+                "1780100150611"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cadastrarEstoque",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_carro\": 1780169846670,\r\n    \"quantidade\": 5,\r\n    \"localizacao_patio\": \"Galpão A-3\",\r\n    \"data_entrada\": \"2026-05-29\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/estoque",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atualizarEstoque",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"marca\": \"Toyota\",\r\n    \"modelo\": \"Corolla\",\r\n    \"ano\": 2025,\r\n    \"placa\": \"ABC-1234\",\r\n    \"preco\": 110000.00,\r\n    \"cor\": \"Prata\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/estoque/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "estoque",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "removerEstoque",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/estoque/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "estoque",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "notas  fiscais",
+      "item": [
+        {
+          "name": "listaNotasFiscais",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "pesquisarNotaPorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/notas/1780169454533",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "notas",
+                "1780169454533"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cadastrarNotaFiscal",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"numero_nota\": \"NF-2025-0006\",\r\n    \"data_emissao\": \"2025-06-10\",\r\n    \"valor_total\": 110000.00,\r\n    \"id_cliente\": 1780169417976,\r\n    \"id_vendedor\": 1780169303957,\r\n    \"id_carro\": 1780169846670\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -10,8 +10,9 @@ function listaNotasFiscais(req, res) {
     try {
         const notasFiscais = notaFiscalService.listaNotasFiscais();
         if (notasFiscais.length === 0) {
-            res.status(404).json({
-                mensagem: "Notas fiscais não encontrados"
+            res.status(200).json({
+                mensagem: "Lista vazia",
+                notasFiscais: notasFiscais
             });
             return;
         }

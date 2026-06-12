@@ -13,8 +13,9 @@ function listaVendedores(req, res) {
     try {
         const vendedores = vendedorService.listaVendedores();
         if (vendedores.length === 0) {
-            res.status(404).json({
-                mensagem: "Vendedores não encontrados"
+            res.status(200).json({
+                mensagem: "Lista vazia",
+                vendedores: vendedores
             });
             return;
         }

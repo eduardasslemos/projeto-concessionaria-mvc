@@ -1,11 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotaFiscalRepository = void 0;
-const estoqueRepository_1 = require("../repositories/estoqueRepository");
 class NotaFiscalRepository {
     static instance;
     notasLista = [];
-    estoqueRepo = estoqueRepository_1.EstoqueRepository.getInstance();
     constructor() { }
     static getInstance() {
         if (!this.instance) {
@@ -28,6 +26,10 @@ class NotaFiscalRepository {
     //retorna nota fiscal por numero
     filtraNotaPorNumero(numero_nota) {
         return this.notasLista.find(nota => nota.numero_nota === numero_nota);
+    }
+    //lista notas fiscais por vendedor
+    listaNotasPorVendedor(idVendedor) {
+        return this.notasLista.filter(nota => nota.id_vendedor === idVendedor);
     }
 }
 exports.NotaFiscalRepository = NotaFiscalRepository;

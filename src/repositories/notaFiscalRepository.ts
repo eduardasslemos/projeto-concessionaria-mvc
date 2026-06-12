@@ -1,11 +1,8 @@
 import { NotaFiscal } from "../models/NotaFiscal";
-import { EstoqueRepository } from "../repositories/estoqueRepository";
 
 export class NotaFiscalRepository {
     private static instance: NotaFiscalRepository;
     private notasLista: NotaFiscal[] = [];
-    
-    private estoqueRepo = EstoqueRepository.getInstance();
 
     private constructor() {}
 
@@ -34,5 +31,10 @@ export class NotaFiscalRepository {
     //retorna nota fiscal por numero
     filtraNotaPorNumero(numero_nota: string): NotaFiscal | undefined {
         return this.notasLista.find(nota => nota.numero_nota === numero_nota);
+    }
+
+    //lista notas fiscais por vendedor
+    listaNotasPorVendedor(idVendedor: number): NotaFiscal[] {
+        return this.notasLista.filter(nota => nota.id_vendedor === idVendedor);
     }
 }

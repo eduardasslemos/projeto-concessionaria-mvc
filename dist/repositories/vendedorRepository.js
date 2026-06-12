@@ -1,11 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VendedorRepository = void 0;
-const notaFiscalRepository_1 = require("./notaFiscalRepository");
 class VendedorRepository {
     static instance;
     vendedorLista = [];
-    notaFiscalRepo = notaFiscalRepository_1.NotaFiscalRepository.getInstance();
     constructor() { }
     static getInstance() {
         if (!this.instance) {
@@ -34,10 +32,6 @@ class VendedorRepository {
     removeVendedor(id) {
         const indice = this.vendedorLista.findIndex(vendedor => vendedor.id_vendedor === id);
         this.vendedorLista.splice(indice, 1)[0];
-    }
-    //lista notas fiscais
-    listaNotasFiscais(id) {
-        return this.notaFiscalRepo.listaNotaFiscal().filter(nota => nota.id_vendedor === id);
     }
     //retorna vendedor por matricula
     filtraVendedorPorMatricula(matricula) {

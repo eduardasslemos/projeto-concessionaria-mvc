@@ -1,9 +1,11 @@
 import { Vendedor } from "../models/Vendedor";
 import { VendedorRepository } from "../repositories/vendedorRepository";
 import { NotaFiscal } from "../models/NotaFiscal";
+import { NotaFiscalRepository } from "../repositories/notaFiscalRepository";
 
 export class VendedorService {
     vendedorRepository: VendedorRepository = VendedorRepository.getInstance();
+    notaFiscalRepository: NotaFiscalRepository = NotaFiscalRepository.getInstance();
 
     //lista todos os vendedores
     listaVendedores(): Vendedor[]{
@@ -64,7 +66,7 @@ export class VendedorService {
     //remove um vendedor
     removeVendedores(id:any) {
         const idNumber: number = parseInt(id, 10);
-        const notas = this.vendedorRepository.listaNotasFiscais(idNumber);
+        const notas = this.notaFiscalRepository.listaNotasPorVendedor(idNumber);
 
         if(notas.length > 0){
             throw new Error("O vendedor possui notas fiscais vinculadas a ele e não pode ser excluído");
@@ -74,7 +76,7 @@ export class VendedorService {
     }
 
     //lista notas fiscais
-    listaNotasFiscais(id: any): NotaFiscal[]{
-        return this.vendedorRepository.listaNotasFiscais(id);
+    listaNotasFiscais(id: number): NotaFiscal[] {
+        return this.notaFiscalRepository.listaNotasPorVendedor(id);
     }
 }

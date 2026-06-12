@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VendedorService = void 0;
 const Vendedor_1 = require("../models/Vendedor");
 const vendedorRepository_1 = require("../repositories/vendedorRepository");
+const notaFiscalRepository_1 = require("../repositories/notaFiscalRepository");
 class VendedorService {
     vendedorRepository = vendedorRepository_1.VendedorRepository.getInstance();
+    notaFiscalRepository = notaFiscalRepository_1.NotaFiscalRepository.getInstance();
     //lista todos os vendedores
     listaVendedores() {
         return this.vendedorRepository.listaVendedores();
@@ -50,7 +52,7 @@ class VendedorService {
     //remove um vendedor
     removeVendedores(id) {
         const idNumber = parseInt(id, 10);
-        const notas = this.vendedorRepository.listaNotasFiscais(idNumber);
+        const notas = this.notaFiscalRepository.listaNotasPorVendedor(idNumber);
         if (notas.length > 0) {
             throw new Error("O vendedor possui notas fiscais vinculadas a ele e não pode ser excluído");
         }
@@ -58,7 +60,7 @@ class VendedorService {
     }
     //lista notas fiscais
     listaNotasFiscais(id) {
-        return this.vendedorRepository.listaNotasFiscais(id);
+        return this.notaFiscalRepository.listaNotasPorVendedor(id);
     }
 }
 exports.VendedorService = VendedorService;

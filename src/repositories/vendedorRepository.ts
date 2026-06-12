@@ -1,12 +1,9 @@
 import { Vendedor } from "../models/Vendedor";
 import { NotaFiscal } from "../models/NotaFiscal";
-import { NotaFiscalRepository } from "./notaFiscalRepository";
 
 export class VendedorRepository {
     private static instance: VendedorRepository;
     private vendedorLista: Vendedor[] = [];
-
-    private notaFiscalRepo = NotaFiscalRepository.getInstance();
 
     private constructor() {}
 
@@ -42,11 +39,6 @@ export class VendedorRepository {
     removeVendedor(id: number) {
         const indice = this.vendedorLista.findIndex(vendedor => vendedor.id_vendedor === id);
         this.vendedorLista.splice(indice, 1)[0];
-    }
-
-    //lista notas fiscais
-    listaNotasFiscais(id: number): NotaFiscal[] {
-        return this.notaFiscalRepo.listaNotaFiscal().filter(nota => nota.id_vendedor === id);
     }
 
     //retorna vendedor por matricula

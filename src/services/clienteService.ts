@@ -1,9 +1,11 @@
 import { Cliente } from "../models/Cliente";
 import { ClienteRepository } from "../repositories/clienteRepository";
 import { NotaFiscal } from "../models/NotaFiscal";
+import { NotaFiscalRepository } from "../repositories/notaFiscalRepository";
 
 export class ClienteService {
     clienteRepository = ClienteRepository.getInstance();
+    notaFiscalRepository = NotaFiscalRepository.getInstance();
 
     // listar clientes
 
@@ -62,7 +64,7 @@ export class ClienteService {
     // remover cliente, somente se não tiver nota fiscal associada.
     removerCliente(id: any): Cliente | undefined {
         const idCliente : number = parseInt(id, 10);
-        const notasCliente = this.clienteRepository.listarNotasCliente(idCliente);
+        const notasCliente = this.notaFiscalRepository.listaNotasPorCliente(idCliente);
 
         if (notasCliente.length > 0) {
             throw new Error("Não é possível remover cliente com notas fiscais associadas");
@@ -73,6 +75,6 @@ export class ClienteService {
     // listar todas as notas fiscais de um cliente
     listarNotasCliente(id: any): NotaFiscal[] {
         const idCliente : number = parseInt(id, 10);
-        return this.clienteRepository.listarNotasCliente(idCliente);
+        return this.notaFiscalRepository.listaNotasPorCliente(idCliente);
     }
 }

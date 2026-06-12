@@ -42,9 +42,5 @@ class ClienteRepository {
         }
         return this.cliente.splice(indice, 1)[0];
     }
-    //listar todas notas fiscais de um cliente
-    listarNotasCliente(id) {
-        return this.notaFiscalRepository.listaNotaFiscal().filter(nota => nota.id_cliente === id);
-    }
 }
 exports.ClienteRepository = ClienteRepository;

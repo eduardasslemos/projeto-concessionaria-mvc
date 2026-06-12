@@ -37,4 +37,14 @@ export class NotaFiscalRepository {
     listaNotasPorVendedor(idVendedor: number): NotaFiscal[] {
         return this.notasLista.filter(nota => nota.id_vendedor === idVendedor);
     }
+
+    //lista notas fiscais por cliente
+    listaNotasPorCliente(idCliente: number): NotaFiscal[] {
+        return this.notasLista.filter(nota => nota.id_cliente === idCliente);
+    }
+
+    //lista notas fiscais por carro
+    listaNotasPorCarro(idCarro: number): NotaFiscal[] {
+        return this.notasLista.filter(nota => nota.id_carro === idCarro);
+    }
 }

@@ -35,6 +35,7 @@ export class CarroRepository{
     //Atualiza os dados do carro
     atualizarCarro(id: number, carro: Carro): Carro{
         const indice = this.carros.findIndex(carro=>carro.id_carro ===id );
+        carro.id_carro =id;
         this.carros[indice] = carro;
         return this.carros[indice];
     }

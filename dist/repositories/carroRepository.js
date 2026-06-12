@@ -29,6 +29,7 @@ class CarroRepository {
     //Atualiza os dados do carro
     atualizarCarro(id, carro) {
         const indice = this.carros.findIndex(carro => carro.id_carro === id);
+        carro.id_carro = id;
         this.carros[indice] = carro;
         return this.carros[indice];
     }

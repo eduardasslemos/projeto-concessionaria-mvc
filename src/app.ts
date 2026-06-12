@@ -36,7 +36,7 @@ app.delete("/api/carros/:id",removerCarro);
 //Rotas estoque
 app.get("/api/estoque",listarEstoque);
 app.get("/api/estoque/:id", buscarEstoquePorId);
-app.get("/api/carros/:id_carro",buscarPorCarro);
+app.get("/api/estoque/carros/:id_carro",buscarPorCarro);
 app.post("/api/estoque", cadastrarEstoque);
 app.put("/api/estoque/:id", atualizarEstoque);
 app.delete("/api/estoque/:id", removerEstoque);

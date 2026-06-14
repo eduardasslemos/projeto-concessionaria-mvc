@@ -5,26 +5,21 @@ import { ClienteService } from "../services/clienteService";
 
     //listar clientes
     export function listarCliente(req: Request, res: Response): void {
+
         try {
             const cliente = clienteService.listarCliente();
 
-            if(cliente.length === 0){
-                res.status(404).json({
-                    mensagem: "Clientes não encontrados" 
+            res.status(200).json(cliente); 
+
+            } catch (error: any) {
+                res.status(400).json({
+                mensagem: error.message
                 });
                 return;
             }
 
-            res.status(200).json(
-            {
-            mensagem : "Clientes encontrados com sucesso!",
-            cliente: cliente
-            }
-            );
-        } catch (error: any) {
-            res.status(400).json({message: error.message});
         }   
-    }
+    
     //buscar cliente por id
     export function buscarClientePorId (req: Request, res: Response): void {
 
@@ -83,7 +78,7 @@ import { ClienteService } from "../services/clienteService";
         }
 
     }
-
+  
     //remover cliente
     export function removerCliente(req: Request, res: Response): void {
         try {
@@ -98,16 +93,19 @@ import { ClienteService } from "../services/clienteService";
                 return;
             }
 
-            const clienteRemovido = clienteService.removerCliente(id);
-            res.status(200).json({
-                mensagem: "Cliente removido com sucesso!",
-                cliente: clienteRemovido
-            });
-        } catch (error: any) {
-            if (error.message === "Não é possível remover cliente com notas fiscais associadas") {
-                res.status(422).json({ message: error.message });
-                return;
+            const notasFiscais = clienteService.listarNotasCliente(id);
+
+            if (notasFiscais && notasFiscais.length > 0) {
+            res.status(422).json({ 
+                message: "Não é possível remover cliente com notas fiscais associadas"
+             });
+            return;
             }
+
+            const clienteRemovido = clienteService.removerCliente(id);
+            res.status(200).json(clienteRemovido);
+
+            } catch (error: any) {
             res.status(400).json({ message: error.message });
         }
     }

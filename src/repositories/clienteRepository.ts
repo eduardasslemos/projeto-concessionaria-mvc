@@ -1,14 +1,11 @@
 import { Cliente } from "../models/Cliente"; 
 import { NotaFiscal } from "../models/NotaFiscal";
-import { NotaFiscalRepository } from "./notaFiscalRepository";
+
 
 export class ClienteRepository {
     private static instance : ClienteRepository;
     private cliente : Cliente [] = [];
-
-    private notaFiscalRepository = NotaFiscalRepository.getInstance(); //perguntar duda
-
-
+    
     // Singleton: garante que só existe UMA instância do repository
     static getInstance(): ClienteRepository {
         if (!ClienteRepository.instance) {

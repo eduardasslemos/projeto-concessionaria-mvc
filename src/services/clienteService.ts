@@ -4,8 +4,8 @@ import { NotaFiscal } from "../models/NotaFiscal";
 import { NotaFiscalRepository } from "../repositories/notaFiscalRepository";
 
 export class ClienteService {
-    clienteRepository = ClienteRepository.getInstance();
-    notaFiscalRepository = NotaFiscalRepository.getInstance();
+    clienteRepository: ClienteRepository =  ClienteRepository.getInstance();
+    notaFiscalRepository: NotaFiscalRepository = NotaFiscalRepository.getInstance();
 
     // listar clientes
 
@@ -73,8 +73,7 @@ export class ClienteService {
     }
 
     // listar todas as notas fiscais de um cliente
-    listarNotasCliente(id: any): NotaFiscal[] {
-        const idCliente : number = parseInt(id, 10);
-        return this.notaFiscalRepository.listaNotasPorCliente(idCliente);
+    listarNotasCliente(id: number): NotaFiscal[] {
+        return this.notaFiscalRepository.listaNotasPorCliente(id);
     }
 }

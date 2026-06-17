@@ -1,154 +1,145 @@
 import { Request, Response } from "express";
 import { CarroService } from "../services/carroService";
+
 const carroService = new CarroService();
 
-//Lista todos os carros
-export function listarCarros(req: Request, res: Response): void {
+// Lista todos os carros
+export async function listarCarros(req: Request, res: Response) {
+  try {
+    const carros = await carroService.listar();
 
-    try {
-        const carros = carroService.listar();
-
-        res.status(200).json(carros);
-
-    } catch (error: any) {
-            res.status(400).json({
-            message: error.message
-        });
-    }
+    return res.status(200).json(carros);
+  } catch (error) {
+    return res.status(500).json({
+      erro: "Erro interno ao listar carros",
+    });
+  }
 }
 
-//Lista carros disponíveis
-export function listarDisponiveis(req: Request, res: Response): void {
+// Busca carro por ID
+export async function buscarCarroPorId(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
 
-    try {
-        const carros = carroService.listarDisponiveis();
-
-        if (!carros || carros.length === 0) {
-            res.status(422).json({
-                message: "Nenhum carro disponível em estoque."
-            });
-            return;
-        }
-
-        res.status(200).json(carros);
-
-    } catch (error: any) {
-        res.status(400).json({
-            message: error.message
-        });
+    if (isNaN(id)) {
+      return res.status(400).json({
+        erro: "ID inválido",
+      });
     }
+
+    const carro = await carroService.buscarPorId(id);
+
+    if (!carro) {
+      return res.status(404).json({
+        erro: "Carro não encontrado",
+      });
+    }
+
+    return res.status(200).json(carro);
+  } catch (error) {
+    return res.status(500).json({
+      erro: "Erro interno ao buscar carro",
+    });
+  }
 }
 
+// Lista carros disponíveis
+export async function listarDisponiveis(req: Request, res: Response) {
+  try {
+    const carrosDisponiveis = await carroService.listarDisponiveis();
 
-//Busca carro por id
-export function buscarCarroPorId(req: Request, res: Response): void {
-
-    try {
-        const id =Number(req.params.id);
-        const carro = carroService.buscarPorId(id);
-
-        if (!carro) {
-            res.status(404).json({
-                message: "Carro não encontrado"
-            });
-
-            return;
-        }
-
-        res.status(200).json(carro);
-
-    } catch (error: any) {
-            res.status(400).json({
-            message: error.message
-        });
-    }
+    return res.status(200).json(carrosDisponiveis);
+  } catch (error) {
+    return res.status(500).json({
+      erro: "Erro interno ao listar carros disponíveis",
+    });
+  }
 }
 
-//Cadastra carro
-export function cadastrarCarro(req: Request, res: Response): void {
+// Cadastra novo carro
+export async function cadastrarCarro(req: Request, res: Response) {
+  try {
+    const novoCarro = await carroService.CadastrarCarro(req.body);
 
-    try {
-        const carro = carroService.CadastrarCarro(req.body);
-
-        res.status(201).json(carro);
-
-    } catch (error: any) {
-        if (error.message ==="Já existe um carro com essa placa") {
-            res.status(409).json({
-                message: error.message
-            });
-
-            return;
-        }
-        res.status(400).json({
-            message: error.message
-        });
+    return res.status(201).json(novoCarro);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({
+        erro: error.message,
+      });
     }
+
+    return res.status(500).json({
+      erro: "Erro interno ao cadastrar carro",
+    });
+  }
 }
 
-//Atualiza carro
-export function atualizarCarro(req: Request, res: Response): void {
+// Atualiza carro
+export async function atualizarCarro(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
 
-    try {
-        const id =Number(req.params.id);
-        const carroAtualizado = carroService.atualizarCarro(id,req.body);
-
-        res.status(200).json(carroAtualizado);
-
-    } catch (error: any) {
-
-        if (error.message ==="Carro não encontrado") {
-
-            res.status(404).json({
-                message: error.message
-            });
-
-            return;
-        }
-        if (error.message ==="Já existe um carro com essa placa") {
-
-            res.status(409).json({
-                message: error.message
-            });
-
-            return;
-        }
-        res.status(400).json({
-            message: error.message
-        });
+    if (isNaN(id)) {
+      return res.status(400).json({
+        erro: "ID inválido",
+      });
     }
+
+    const carroAtualizado = await carroService.atualizarCarro(id, req.body);
+
+    return res.status(200).json(carroAtualizado);
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "Carro não encontrado") {
+        return res.status(404).json({
+          erro: error.message,
+        });
+      }
+
+      return res.status(400).json({
+        erro: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      erro: "Erro interno ao atualizar carro",
+    });
+  }
 }
 
-//Remove carro
-export function removerCarro(req: Request, res: Response): void {
+// Remove carro
+export async function removerCarro(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
 
-    try {
-        const id =Number(req.params.id);
-        const carroRemovido = carroService.removerCarro(id);
-
-        res.status(200).json(carroRemovido);
-
-    } catch (error: any) {
-
-        if (error.message ==="Carro não encontrado") {
-
-            res.status(404).json({
-                message: error.message
-            });
-
-            return;
-        }
-
-        if (error.message.includes("estoque") || error.message.includes("nota fiscal")) {
-            res.status(422).json({
-                message: error.message
-            });
-
-            return;
-        }
-
-        res.status(400).json({
-            message: error.message
-        });
+    if (isNaN(id)) {
+      return res.status(400).json({
+        erro: "ID inválido",
+      });
     }
+
+    const carroRemovido = await carroService.removerCarro(id);
+
+    return res.status(200).json({
+      mensagem: "Carro removido com sucesso",
+      carro: carroRemovido,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "Carro não encontrado") {
+        return res.status(404).json({
+          erro: error.message,
+        });
+      }
+
+      return res.status(400).json({
+        erro: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      erro: "Erro interno ao remover carro",
+    });
+  }
 }

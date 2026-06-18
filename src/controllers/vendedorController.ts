@@ -3,17 +3,9 @@ import { VendedorService } from "../services/vendedorService";
 const vendedorService = new VendedorService();
 
 //lista todos os vendedores
-export function listaVendedores (req: Request, res: Response) {
+export async function listaVendedores (req: Request, res: Response) {
     try {
         const vendedores = vendedorService.listaVendedores();
-
-        if(vendedores.length === 0){
-            res.status(200).json({
-                mensagem: "Lista vazia",
-                vendedores: vendedores
-            });
-            return;
-        }
 
         res.status(200).json (
         {
@@ -27,7 +19,7 @@ export function listaVendedores (req: Request, res: Response) {
 };
 
 //retorna vendedor por id
-export function pesquisarVendedorPorId (req: Request, res: Response) {
+export async function pesquisarVendedorPorId (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
 
@@ -52,7 +44,7 @@ export function pesquisarVendedorPorId (req: Request, res: Response) {
 };
 
 //cadastra novo vendedor
-export function cadastrarVendedor (req: Request, res: Response) {
+export async function cadastrarVendedor (req: Request, res: Response) {
     try {
         const novoVendedor = vendedorService.cadastrarVendedor(req.body);
 
@@ -72,7 +64,7 @@ export function cadastrarVendedor (req: Request, res: Response) {
 };
 
 //atualiza vendedor
-export function atualizaVendedor (req: Request, res: Response) {
+export async function atualizaVendedor (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
         
@@ -94,7 +86,7 @@ export function atualizaVendedor (req: Request, res: Response) {
 };
 
 //remove um vendedor
-export function removeVendedor (req: Request, res: Response) {
+export async function removeVendedor (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
 
@@ -124,7 +116,7 @@ export function removeVendedor (req: Request, res: Response) {
 };
 
 //lista notas fiscais
-export function listaNotas (req: Request, res: Response) {
+export async function listaNotas (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
 

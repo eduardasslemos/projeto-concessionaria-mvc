@@ -6,9 +6,9 @@ exports.cadastrarNotaFiscal = cadastrarNotaFiscal;
 const notaFiscalService_1 = require("../services/notaFiscalService");
 const notaFiscalService = new notaFiscalService_1.NotaFiscalService();
 //listar todas as notas fiscais
-function listaNotasFiscais(req, res) {
+async function listaNotasFiscais(req, res) {
     try {
-        const notasFiscais = notaFiscalService.listaNotasFiscais();
+        const notasFiscais = await notaFiscalService.listaNotasFiscais();
         if (notasFiscais.length === 0) {
             res.status(200).json({
                 mensagem: "Lista vazia",
@@ -27,10 +27,10 @@ function listaNotasFiscais(req, res) {
 }
 ;
 //retorna nota fiscal por id
-function pesquisarNotaPorId(req, res) {
+async function pesquisarNotaPorId(req, res) {
     try {
         let id = Number(req.params.id);
-        const notaPesquisada = notaFiscalService.filtraNotaPorId(id);
+        const notaPesquisada = await notaFiscalService.filtraNotaPorId(id);
         if (!notaPesquisada) {
             res.status(404).json({
                 mensagem: "Nota fiscal não encontrada"
@@ -48,9 +48,9 @@ function pesquisarNotaPorId(req, res) {
 }
 ;
 //cadastra nova nota fiscal
-function cadastrarNotaFiscal(req, res) {
+async function cadastrarNotaFiscal(req, res) {
     try {
-        const novaNota = notaFiscalService.cadastrarNotaFiscal(req.body);
+        const novaNota = await notaFiscalService.cadastrarNotaFiscal(req.body);
         res.status(201).json({
             mensagem: "Nota fiscal adicionado com sucesso!",
             notaFiscal: novaNota

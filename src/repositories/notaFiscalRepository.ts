@@ -12,6 +12,23 @@ export class NotaFiscalRepository {
         }
         return this.instance;
     }
+
+    static getCreateTableQuery(): string {
+        return `
+          CREATE TABLE IF NOT EXISTS nota_fiscal (
+            id_nota INT AUTO_INCREMENT PRIMARY KEY,
+            numero_nota VARCHAR(50) NOT NULL UNIQUE,
+            data_emissao DATE NOT NULL,
+            valor_total DECIMAL(10,2) NOT NULL,
+            id_cliente INT NOT NULL,
+            id_vendedor INT NOT NULL,
+            id_carro INT NOT NULL,
+            FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
+            FOREIGN KEY (id_vendedor) REFERENCES vendedor(id_vendedor),
+            FOREIGN KEY (id_carro) REFERENCES carro(id_carro)
+          );
+        `;
+    }
   
     //listar todas as notas fiscais
     async listaNotaFiscal(): Promise<NotaFiscal[]> {

@@ -9,16 +9,9 @@ exports.listaNotas = listaNotas;
 const vendedorService_1 = require("../services/vendedorService");
 const vendedorService = new vendedorService_1.VendedorService();
 //lista todos os vendedores
-function listaVendedores(req, res) {
+async function listaVendedores(req, res) {
     try {
-        const vendedores = vendedorService.listaVendedores();
-        if (vendedores.length === 0) {
-            res.status(200).json({
-                mensagem: "Lista vazia",
-                vendedores: vendedores
-            });
-            return;
-        }
+        const vendedores = await vendedorService.listaVendedores();
         res.status(200).json({
             mensagem: "Vendedores encontrados com sucesso!",
             vendedores: vendedores
@@ -30,10 +23,10 @@ function listaVendedores(req, res) {
 }
 ;
 //retorna vendedor por id
-function pesquisarVendedorPorId(req, res) {
+async function pesquisarVendedorPorId(req, res) {
     try {
         let id = Number(req.params.id);
-        const vendedorPesquisado = vendedorService.consultarVendedorId(id);
+        const vendedorPesquisado = await vendedorService.consultarVendedorId(id);
         if (!vendedorPesquisado) {
             res.status(404).json({
                 mensagem: "Vendedor não encontrado"
@@ -51,9 +44,9 @@ function pesquisarVendedorPorId(req, res) {
 }
 ;
 //cadastra novo vendedor
-function cadastrarVendedor(req, res) {
+async function cadastrarVendedor(req, res) {
     try {
-        const novoVendedor = vendedorService.cadastrarVendedor(req.body);
+        const novoVendedor = await vendedorService.cadastrarVendedor(req.body);
         res.status(201).json({
             mensagem: "Vendedor adicionado com sucesso!",
             vendedor: novoVendedor
@@ -68,10 +61,10 @@ function cadastrarVendedor(req, res) {
 }
 ;
 //atualiza vendedor
-function atualizaVendedor(req, res) {
+async function atualizaVendedor(req, res) {
     try {
         let id = Number(req.params.id);
-        const vendedor = vendedorService.atualizaVendedor(id, req.body);
+        const vendedor = await vendedorService.atualizaVendedor(id, req.body);
         res.status(200).json({
             mensagem: "Vendedor atualizado com sucesso!",
             vendedor: vendedor
@@ -79,24 +72,24 @@ function atualizaVendedor(req, res) {
     }
     catch (error) {
         if (error.message == "Vendedor não encontrado") {
-            res.status(404).json({ message: error.message });
+            return res.status(404).json({ message: error.message });
         }
         res.status(400).json({ message: error.message });
     }
 }
 ;
 //remove um vendedor
-function removeVendedor(req, res) {
+async function removeVendedor(req, res) {
     try {
         let id = Number(req.params.id);
-        const vendedorPesquisado = vendedorService.consultarVendedorId(id);
+        const vendedorPesquisado = await vendedorService.consultarVendedorId(id);
         if (!vendedorPesquisado) {
             res.status(404).json({
                 mensagem: "Vendedor não encontrado"
             });
             return;
         }
-        vendedorService.removeVendedores(id);
+        await vendedorService.removeVendedores(id);
         res.status(200).json({
             mensagem: "Vendedor removido com sucesso!",
         });
@@ -110,17 +103,17 @@ function removeVendedor(req, res) {
 }
 ;
 //lista notas fiscais
-function listaNotas(req, res) {
+async function listaNotas(req, res) {
     try {
         let id = Number(req.params.id);
-        const vendedorPesquisado = vendedorService.consultarVendedorId(id);
+        const vendedorPesquisado = await vendedorService.consultarVendedorId(id);
         if (!vendedorPesquisado) {
             res.status(404).json({
                 mensagem: "Vendedor não encontrado"
             });
             return;
         }
-        const notasFiscais = vendedorService.listaNotasFiscais(id);
+        const notasFiscais = await vendedorService.listaNotasFiscais(id);
         res.status(200).json({
             mensagem: "Notas fiscais do vendedor encontradas com sucesso!",
             notasFiscais: notasFiscais

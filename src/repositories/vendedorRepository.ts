@@ -22,7 +22,7 @@ export class VendedorRepository {
             comissao_percentual DECIMAL(5,2) NOT NULL
           );
         `;
-      }
+    }
 
     //lista todos os vendedores
     async listaVendedores(): Promise<Vendedor[]> {

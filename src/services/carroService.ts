@@ -110,29 +110,29 @@ export class CarroService {
 
   async removerCarro(id: number): Promise<Carro> {
     const carro = await this.carroRepository.buscarPorId(id);
-
+  
     if (!carro) {
       throw new Error("Carro não encontrado");
     }
-
+  
     const estoqueVinculado = await this.estoqueRepository.buscarPorCarro(id);
-
+  
     if (estoqueVinculado && estoqueVinculado.quantidade > 0) {
       throw new Error("Não se pode remover carro com estoque vinculado");
     }
-
-    const notas = await this.notaFiscalRepository.listaNotasPorCarro(id);
-
-    if (notas && notas.length > 0) {
+  
+    const possuiNotaVinculada = await this.notaFiscalRepository.listaNotasPorCarro(id);
+  
+    if (possuiNotaVinculada) {
       throw new Error("Não se pode remover carro com nota fiscal vinculada");
     }
-
+  
     const carroRemovido = await this.carroRepository.removerCarro(id);
-
+  
     if (!carroRemovido) {
       throw new Error("Erro ao remover carro");
     }
-
+  
     return carroRemovido;
   }
 }

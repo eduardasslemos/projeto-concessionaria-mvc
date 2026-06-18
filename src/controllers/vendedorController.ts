@@ -5,7 +5,7 @@ const vendedorService = new VendedorService();
 //lista todos os vendedores
 export async function listaVendedores (req: Request, res: Response) {
     try {
-        const vendedores = vendedorService.listaVendedores();
+        const vendedores = await vendedorService.listaVendedores();
 
         res.status(200).json (
         {
@@ -23,7 +23,7 @@ export async function pesquisarVendedorPorId (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
 
-        const vendedorPesquisado = vendedorService.consultarVendedorId(id);
+        const vendedorPesquisado = await vendedorService.consultarVendedorId(id);
 
         if(!vendedorPesquisado){
             res.status(404).json({
@@ -46,7 +46,7 @@ export async function pesquisarVendedorPorId (req: Request, res: Response) {
 //cadastra novo vendedor
 export async function cadastrarVendedor (req: Request, res: Response) {
     try {
-        const novoVendedor = vendedorService.cadastrarVendedor(req.body);
+        const novoVendedor = await vendedorService.cadastrarVendedor(req.body);
 
         res.status(201).json (
         {
@@ -68,7 +68,7 @@ export async function atualizaVendedor (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
         
-        const vendedor = vendedorService.atualizaVendedor(id, req.body);
+        const vendedor = await vendedorService.atualizaVendedor(id, req.body);
 
         res.status(200).json (
         {
@@ -78,7 +78,7 @@ export async function atualizaVendedor (req: Request, res: Response) {
         );
     } catch (error: any) {
         if(error.message == "Vendedor não encontrado"){
-            res.status(404).json({message: error.message});
+            return res.status(404).json({message: error.message});
         }
 
         res.status(400).json({message: error.message});
@@ -90,7 +90,7 @@ export async function removeVendedor (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
 
-        const vendedorPesquisado = vendedorService.consultarVendedorId(id);
+        const vendedorPesquisado = await vendedorService.consultarVendedorId(id);
 
         if(!vendedorPesquisado){
             res.status(404).json({
@@ -99,7 +99,7 @@ export async function removeVendedor (req: Request, res: Response) {
             return;
         }
         
-        vendedorService.removeVendedores(id);
+        await vendedorService.removeVendedores(id);
 
         res.status(200).json (
         {
@@ -120,7 +120,7 @@ export async function listaNotas (req: Request, res: Response) {
     try {
         let id = Number(req.params.id);
 
-        const vendedorPesquisado = vendedorService.consultarVendedorId(id);
+        const vendedorPesquisado = await vendedorService.consultarVendedorId(id);
 
         if(!vendedorPesquisado){
             res.status(404).json({
@@ -129,7 +129,7 @@ export async function listaNotas (req: Request, res: Response) {
             return;
         }
 
-        const notasFiscais = vendedorService.listaNotasFiscais(id);
+        const notasFiscais = await vendedorService.listaNotasFiscais(id);
 
         res.status(200).json (
         {

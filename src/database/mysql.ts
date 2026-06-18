@@ -3,6 +3,8 @@ import mysql, { Connection, QueryError } from "mysql2";
 // Entra os repositorios
 // import { CarroRepository } from "../repository/CarroRepository";
 // import { EstoqueRepository } from "../repository/EstoqueRepository";
+// import { VendedorRepository } from "../repository/VendedorRepository";
+// import { NotaFiscalRepository } from "../repository/NotaFiscalRepository";
 
 const dbConfig = {
   host: "localhost",
@@ -44,6 +46,8 @@ export async function inicializarBanco(): Promise<void> {
     // Quando criarmos os repositories, ficará assim:
     // CarroRepository.getCreateTableQuery(),
     // EstoqueRepository.getCreateTableQuery(),
+    // VendedorRepository.getCreateTableQuery(),
+    // NotaFiscalRepository.getCreateTableQuery(),
   ];
 
   try {

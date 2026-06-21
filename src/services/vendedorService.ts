@@ -4,79 +4,96 @@ import { NotaFiscal } from "../models/NotaFiscal";
 import { NotaFiscalRepository } from "../repositories/notaFiscalRepository";
 
 export class VendedorService {
-    vendedorRepository: VendedorRepository = VendedorRepository.getInstance();
-    notaFiscalRepository: NotaFiscalRepository = NotaFiscalRepository.getInstance();
+    private vendedorRepository = VendedorRepository.getInstance();
+    private notaFiscalRepository = NotaFiscalRepository.getInstance();
 
-    //lista todos os vendedores
-    listaVendedores(): Vendedor[]{
-        return this.vendedorRepository.listaVendedores();
+    async listaVendedores(): Promise<Vendedor[]> {
+        return await this.vendedorRepository.listaVendedores();
     }
 
-    //retorna vendedor por id
-    consultarVendedorId (id: any): Vendedor | undefined {
-        const idNumber: number = parseInt(id, 10);
-        return this.vendedorRepository.filtraVendedorPorId(idNumber);
+    async consultarVendedorId(id: number): Promise<Vendedor | null> {
+        return await this.vendedorRepository.filtraVendedorPorId(id);
     }
 
-    //cadastra novo vendedor
-    cadastrarVendedor (vendedorData: any): Vendedor {
-        const {nome, matricula, comissao_percentual} = vendedorData;
+    async cadastrarVendedor(vendedorData: any): Promise<Vendedor> {
+        const { nome, matricula, comissao_percentual } = vendedorData;
 
-        if (!nome || !matricula || !comissao_percentual) {
-            throw new Error ("Vendedor requer nome, matrícula e percentual da comissão");
+        if (!nome || !matricula || comissao_percentual === undefined) {
+        throw new Error("Vendedor requer nome, matrícula e percentual da comissão");
         }
 
-        if(comissao_percentual < 0 || comissao_percentual > 30){
-            throw new Error ("Percentual da comissão deve ser um número positivo entre 0 e 30");
+        if (Number(comissao_percentual) < 0 || Number(comissao_percentual) > 30) {
+        throw new Error("Percentual da comissão deve ser um número positivo entre 0 e 30");
         }
 
-        const vendedorExistente = this.vendedorRepository.filtraVendedorPorMatricula(matricula);
+        const vendedorExistente = await this.vendedorRepository.filtraVendedorPorMatricula(matricula);
 
-        if(vendedorExistente){
-            throw new Error ("Já existe um vendedor com essa matrícula");
+        if (vendedorExistente) {
+        throw new Error("Já existe um vendedor com essa matrícula");
         }
 
-        const novoVendedor = new Vendedor(nome, matricula, comissao_percentual);
-        this.vendedorRepository.insereVendedor(novoVendedor);
-        return novoVendedor;
+        const novoVendedor = new Vendedor(null, nome, matricula, Number(comissao_percentual));
+
+        return await this.vendedorRepository.insereVendedor(novoVendedor);
     }
 
-    //atualiza vendedor
-    atualizaVendedor(id:any, vendedorData: any): Vendedor {
-        const idNumber: number = parseInt(id, 10);
-        const vendedorExistente = this.vendedorRepository.filtraVendedorPorId(idNumber);
+    async atualizaVendedor(id: number, vendedorData: any): Promise<Vendedor> {
+        const vendedorExistente = await this.vendedorRepository.filtraVendedorPorId(id);
 
         if (!vendedorExistente) {
-            throw new Error("Vendedor não encontrado");
+        throw new Error("Vendedor não encontrado");
         }
 
-        const {nome, matricula, comissao_percentual} = vendedorData;
+        const { nome, matricula, comissao_percentual } = vendedorData;
 
-        if (!nome || !matricula || !comissao_percentual) {
-            throw new Error("Vendedor requer nome, matrícula e percentual da comissão");
+        if (!nome || !matricula || comissao_percentual === undefined) {
+        throw new Error("Vendedor requer nome, matrícula e percentual da comissão");
         }
 
-        const vendedorAtualizado = new Vendedor(nome, matricula, comissao_percentual);
-        vendedorAtualizado.id_vendedor = idNumber;
-        this.vendedorRepository.atualizaVendedor(idNumber, vendedorAtualizado);
+        if (Number(comissao_percentual) < 0 || Number(comissao_percentual) > 30) {
+        throw new Error("Percentual da comissão deve ser um número positivo entre 0 e 30");
+        }
 
-        return vendedorAtualizado;
+        const matriculaExistente = await this.vendedorRepository.filtraVendedorPorMatricula(matricula);
+
+        if (matriculaExistente && matriculaExistente.id_vendedor !== id) {
+        throw new Error("Já existe um vendedor com essa matrícula");
+        }
+
+        const vendedorAtualizado = new Vendedor(id, nome, matricula, Number(comissao_percentual));
+
+        const resultado = await this.vendedorRepository.atualizaVendedor(id, vendedorAtualizado);
+
+        if (!resultado) {
+        throw new Error("Erro ao atualizar vendedor");
+        }
+
+        return resultado;
     }
 
-    //remove um vendedor
-    removeVendedores(id:any) {
-        const idNumber: number = parseInt(id, 10);
-        const notas = this.notaFiscalRepository.listaNotasPorVendedor(idNumber);
+    async removeVendedores(id: number): Promise<Vendedor> {
+        const vendedorExistente = await this.vendedorRepository.filtraVendedorPorId(id);
 
-        if(notas.length > 0){
-            throw new Error("O vendedor possui notas fiscais vinculadas a ele e não pode ser excluído");
+        if (!vendedorExistente) {
+        throw new Error("Vendedor não encontrado");
         }
 
-        this.vendedorRepository.removeVendedor(id);
+        const notas = await this.notaFiscalRepository.listaNotasPorVendedor(id);
+
+        if (notas && notas.length > 0) {
+        throw new Error("O vendedor possui notas fiscais vinculadas a ele e não pode ser excluído");
+        }
+
+        const vendedorRemovido = await this.vendedorRepository.removeVendedor(id);
+
+        if (!vendedorRemovido) {
+        throw new Error("Erro ao remover vendedor");
+        }
+
+        return vendedorRemovido;
     }
 
-    //lista notas fiscais
-    listaNotasFiscais(id: number): NotaFiscal[] {
-        return this.notaFiscalRepository.listaNotasPorVendedor(id);
+    async listaNotasFiscais(id: number): Promise<NotaFiscal[]> {
+        return await this.notaFiscalRepository.listaNotasPorVendedor(id);
     }
 }

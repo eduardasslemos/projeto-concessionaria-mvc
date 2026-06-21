@@ -1,48 +1,49 @@
 import { Cliente } from "../models/Cliente";
 import { ClienteRepository } from "../repositories/clienteRepository";
-import { NotaFiscal } from "../models/NotaFiscal";
 import { NotaFiscalRepository } from "../repositories/notaFiscalRepository";
+import { NotaFiscal } from "../models/NotaFiscal";
 
 export class ClienteService {
-    clienteRepository: ClienteRepository =  ClienteRepository.getInstance();
-    notaFiscalRepository: NotaFiscalRepository = NotaFiscalRepository.getInstance();
+    private clienteRepository =  ClienteRepository.getInstance();
+    private notaFiscalRepository = NotaFiscalRepository.getInstance();
 
     // listar clientes
 
-    listarCliente(): Cliente[]{
-        return this.clienteRepository.listarCliente();
+    async listarCliente(): Promise<Cliente[]>{
+        return await this.clienteRepository.listarCliente();
     }
     // listar cliente por id
 
-    buscarClienteId(id: any): Cliente | undefined {
-        const idCliente : number = parseInt(id, 10);
-        return this.clienteRepository.buscarClientePorId(idCliente);
+    async buscarClienteId(id:number):  Promise<Cliente | null>{
+        return await this.clienteRepository.buscarClientePorId(id);
     }
 
     // cadastrar cliente, com nome, cpf e telefone obrigatorios, e cpf nao duplicado.
 
-    cadastrarCliente(clienteData: any): Cliente {
+    async cadastrarCliente(clienteData: any): Promise <Cliente> {
         const {nome, cpf, telefone, email, cidade} = clienteData;
 
         if (!nome || !cpf || !telefone) {
         throw new Error("Cliente precisa ter nome, cpf e telefone");
         }
 
-        if (this.clienteRepository.verficarClientePorCpf(cpf)) {
-        throw new Error("Já existe um cliente com esse CPF");
-        }
+        
+       const cpfExistente = await this.clienteRepository.verficarClientePorCpf(cpf);
 
-        const novoCliente = new Cliente (nome, cpf, telefone, email,cidade);
-        this.clienteRepository.cadastrarCliente(novoCliente);
-        return novoCliente;
+         if (cpfExistente) {
+        throw new Error("Já existe um cliente com esse CPF");
+    }
+
+        const novoCliente = new Cliente (null, nome, cpf, telefone, email,cidade);
+        
+      return await this.clienteRepository.cadastrarCliente(novoCliente);
 
     }
 
     // atualizar dados do cliente.
 
-    atualizarCliente(id: any, clienteData: any): Cliente {
-        const idCliente : number = parseInt(id, 10);
-        const clienteExistente = this.clienteRepository.buscarClientePorId(idCliente);
+    async atualizarCliente(id:number, clienteData: any): Promise<Cliente>{
+        const clienteExistente = await this.clienteRepository.buscarClientePorId(id);
 
         if (!clienteExistente) {
             throw new Error("O cliente não foi encontrado");
@@ -53,27 +54,47 @@ export class ClienteService {
             throw new Error("Cliente precisa ter nome, cpf e telefone");
         }
 
-        const clienteAtualizado = new Cliente (nome, cpf, telefone, email, cidade);
-        clienteAtualizado.id_cliente = idCliente;
-        this.clienteRepository.atualizarDadosCliente(idCliente, clienteAtualizado);
+        const cpfExistente = await this.clienteRepository.verficarClientePorCpf(cpf);
 
-        return clienteAtualizado;
+       if (cpfExistente && cpfExistente.id_cliente !== Number(id)){
+            throw new Error("Já existe um cliente com esse CPF");
+        }
 
+        const clienteObjeto = new Cliente(id, nome, cpf, telefone, email, cidade);
+
+        const clienteSalvo = await this.clienteRepository.atualizarDadosCliente(id, clienteObjeto);
+        
+        if (!clienteSalvo) {
+            throw new Error("Erro ao atualizar os dados do cliente");
+        }
+
+        return clienteSalvo;
     }
 
     // remover cliente, somente se não tiver nota fiscal associada.
-    removerCliente(id: any): Cliente | undefined {
-        const idCliente : number = parseInt(id, 10);
-        const notasCliente = this.notaFiscalRepository.listaNotasPorCliente(idCliente);
+    async removerCliente(id: number): Promise<Cliente> {
+        const clienteExistente = await this.clienteRepository.buscarClientePorId(id);
+
+        if(!clienteExistente){
+            throw new Error ("Cliente nao encontrado");
+        }
+
+        const notasCliente = await this.notaFiscalRepository.listaNotasPorCliente(id);
 
         if (notasCliente.length > 0) {
             throw new Error("Não é possível remover cliente com notas fiscais associadas");
         }
-        return this.clienteRepository.removeCliente(idCliente);
+        const clienteRemovido = await this.clienteRepository.removeCliente(id);
+
+        if (!clienteRemovido) {
+            throw new Error("Erro ao remover o cliente");
+        }
+
+        return clienteRemovido;
     }
 
     // listar todas as notas fiscais de um cliente
-    listarNotasCliente(id: number): NotaFiscal[] {
-        return this.notaFiscalRepository.listaNotasPorCliente(id);
+    async listarNotasCliente(id: number): Promise<NotaFiscal[]> {
+        return await this.notaFiscalRepository.listaNotasPorCliente(id);
     }
 }

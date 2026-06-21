@@ -1,54 +1,134 @@
 import { Cliente } from "../models/Cliente"; 
-import { NotaFiscal } from "../models/NotaFiscal";
-
+import { executarComandoSQL } from "../database/mysql";
 
 export class ClienteRepository {
     private static instance : ClienteRepository;
-    private cliente : Cliente [] = [];
-    
-    // Singleton: garante que só existe UMA instância do repository
-    static getInstance(): ClienteRepository {
-        if (!ClienteRepository.instance) {
-            ClienteRepository.instance = new ClienteRepository();
+
+    private constructor(){}
+
+    public static getInstance(): ClienteRepository {
+        if (!this.instance){
+            this.instance = new ClienteRepository();
         }
-        return ClienteRepository.instance;
+        return this.instance;
+    }
+    
+    static getCreateTableQuery(): string {
+       return `
+        CREATE TABLE IF NOT EXISTS cliente (
+            id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+            nome VARCHAR(100) NOT NULL,
+            cpf VARCHAR(20) NOT NULL UNIQUE,
+            telefone VARCHAR(20) NOT NULL,
+            email VARCHAR(100),
+            cidade VARCHAR(100)
+        );
+        `;
     }
 
     //Listar clientes 
 
-    listarCliente(): Cliente[]{
-        return this.cliente;
+    async listarCliente(): Promise<Cliente[]> {
+        const linhas = await executarComandoSQL(
+            "SELECT id_cliente, nome, cpf, telefone, email, cidade FROM cliente",
+            []
+        );
+
+        const clientes : Cliente[]= linhas.map((linha: any)=>{
+            return new Cliente(linha.id_cliente, linha.nome, linha.cpf, linha.telefone, linha.email, linha.cidade);
+        });
+
+        return clientes;
     }
 
     //Buscar por id
-    buscarClientePorId(id:number) : Cliente | undefined{
-        return this.cliente.find(cliente=>cliente.id_cliente===id);
+    async buscarClientePorId(id:number) :Promise <Cliente | null> {
+           const linhas = await executarComandoSQL(
+            "SELECT id_cliente, nome, cpf, telefone, email, cidade FROM cliente WHERE id_cliente = ?",[id]);
+      
+            if (linhas.length === 0) {
+                return null;
     }
-    //Verfica duplicidade no cpf
-    verficarClientePorCpf(cpf: string): Cliente | undefined {
-        return this.cliente.find(cliente => cliente.cpf === cpf);
+
+    const linha = linhas[0];
+
+    return new Cliente(linha.id_cliente,linha.nome,linha.cpf,linha.telefone,linha.email,linha.cidade);
+    }
+
+      // VERIFICAR CPF
+    async verficarClientePorCpf(cpf: string): Promise<Cliente | null> {
+        const linhas = await executarComandoSQL(
+            "SELECT id_cliente, nome, cpf, telefone, email, cidade FROM cliente WHERE cpf = ?",
+            [cpf]
+        );
+
+        if (linhas.length === 0) return null;
+
+        const linha = linhas[0];
+
+        return new Cliente(linha.id_cliente,linha.nome,linha.cpf,linha.telefone,linha.email,linha.cidade);
     }
 
     //Cadastrar cliente 
 
-    cadastrarCliente(cliente : Cliente): void{
-        this.cliente.push(cliente);
-    }
+    async cadastrarCliente(cliente : Cliente): Promise<Cliente> {
+        const resultado = await executarComandoSQL(
+            `INSERT INTO cliente (nome, cpf, telefone, email, cidade)
+             VALUES (?, ?, ?, ?, ?)`,
+            [
+                cliente.nome,
+                cliente.cpf,
+                cliente.telefone,
+                cliente.email,
+                cliente.cidade
+            ]
+        );
 
+        const idGerado = resultado.insertId;
+
+        return new Cliente(idGerado, cliente.nome, cliente.cpf, cliente.telefone, cliente.email, cliente.cidade);
+    }
     //Atualizar dados do cliente
 
-    atualizarDadosCliente(id: number, cliente: Cliente){
-        const indice = this.cliente.findIndex(cliente=>cliente.id_cliente ===id);
-        this.cliente[indice] = cliente;
+    async atualizarDadosCliente(id: number, cliente: Cliente): Promise < Cliente| null>{
+        const clienteExistente = await this.buscarClientePorId(id);
+
+        if(!clienteExistente){
+            return null;
+        }
+        await executarComandoSQL(
+            `UPDATE cliente 
+            SET nome = ?, cpf = ?, telefone = ?, email = ?, cidade = ?
+            WHERE id_cliente = ?`,
+            [
+                cliente.nome,
+                cliente.cpf,
+                cliente.telefone,
+                cliente.email,
+                cliente.cidade,
+                id
+            ]
+        );
+
+        return new Cliente (id, cliente.nome,cliente.cpf,cliente.telefone,cliente.email,cliente.cidade);
     }
+
 
     //Remove cliente
 
-    removeCliente(id: number){
-        const indice = this.cliente.findIndex(cliente=>cliente.id_cliente === id);
-        if(indice === -1){
-            return undefined
+    async removeCliente(id: number): Promise<Cliente | null>{
+        const clienteExistente = await this.buscarClientePorId(id);
+
+        if(!clienteExistente){
+            return null;
         }
-        return this.cliente.splice(indice,1)[0];
+           await executarComandoSQL(
+            "DELETE FROM cliente WHERE id_cliente = ?",
+            [id]
+        );
+
+        return clienteExistente;
     }
+
+
 }

@@ -5,6 +5,7 @@ import { CarroRepository } from "../repositories/carroRepository";
 //import { EstoqueRepository } from "../repositories/estoqueRepository";
 import { VendedorRepository } from "../repositories/vendedorRepository";
 import { NotaFiscalRepository } from "../repositories/notaFiscalRepository";
+import { ClienteRepository } from "../repositories/clienteRepository";
 
 const dbConfig = {
   host: "localhost",
@@ -48,6 +49,7 @@ export async function inicializarBanco(): Promise<void> {
     //EstoqueRepository.getCreateTableQuery(),
     VendedorRepository.getCreateTableQuery(),
     NotaFiscalRepository.getCreateTableQuery(),
+    ClienteRepository.getCreateTableQuery()
   ];
 
   try {

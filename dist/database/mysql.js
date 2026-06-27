@@ -8,10 +8,10 @@ exports.inicializarBanco = inicializarBanco;
 const mysql2_1 = __importDefault(require("mysql2"));
 // Entra os repositorios
 const carroRepository_1 = require("../repositories/carroRepository");
+const clienteRepository_1 = require("../repositories/clienteRepository");
 const estoqueRepository_1 = require("../repositories/estoqueRepository");
 const vendedorRepository_1 = require("../repositories/vendedorRepository");
 const notaFiscalRepository_1 = require("../repositories/notaFiscalRepository");
-const clienteRepository_1 = require("../repositories/clienteRepository");
 const dbConfig = {
     host: "localhost",
     port: 3306,

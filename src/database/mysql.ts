@@ -46,10 +46,11 @@ export async function inicializarBanco(): Promise<void> {
   const schemas = [
     // Quando criarmos os repositories, ficará assim:
     CarroRepository.getCreateTableQuery(),
+    ClienteRepository.getCreateTableQuery(),
     //EstoqueRepository.getCreateTableQuery(),
     VendedorRepository.getCreateTableQuery(),
     NotaFiscalRepository.getCreateTableQuery(),
-    ClienteRepository.getCreateTableQuery()
+    
   ];
 
   try {

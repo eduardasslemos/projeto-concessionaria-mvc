@@ -75,8 +75,8 @@ class CarroService {
         if (estoqueVinculado && estoqueVinculado.quantidade > 0) {
             throw new Error("Não se pode remover carro com estoque vinculado");
         }
-        const possuiNotaVinculada = await this.notaFiscalRepository.listaNotasPorCarro(id);
-        if (possuiNotaVinculada) {
+        const notas = await this.notaFiscalRepository.listaNotasPorCarro(id);
+        if (notas.length > 0) {
             throw new Error("Não se pode remover carro com nota fiscal vinculada");
         }
         const carroRemovido = await this.carroRepository.removerCarro(id);

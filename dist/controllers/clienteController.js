@@ -9,33 +9,25 @@ exports.listarNotasCliente = listarNotasCliente;
 const clienteService_1 = require("../services/clienteService");
 const clienteService = new clienteService_1.ClienteService();
 //listar clientes
-function listarCliente(req, res) {
+async function listarCliente(req, res) {
     try {
-        const cliente = clienteService.listarCliente();
-        if (cliente.length === 0) {
-            res.status(404).json({
-                mensagem: "Clientes não encontrados"
-            });
-            return;
-        }
+        const clientes = await clienteService.listarCliente();
         res.status(200).json({
             mensagem: "Clientes encontrados com sucesso!",
-            cliente: cliente
+            cliente: clientes
         });
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ mensagem: error.message });
     }
 }
 //buscar cliente por id
-function buscarClientePorId(req, res) {
+async function buscarClientePorId(req, res) {
     try {
         const id = Number(req.params.id);
-        const clienteId = clienteService.buscarClienteId(id);
+        const clienteId = await clienteService.buscarClienteId(id);
         if (!clienteId) {
-            res.status(404).json({
-                mensagem: "Cliente não encontrado"
-            });
+            res.status(404).json({ mensagem: "Cliente não encontrado" });
             return;
         }
         res.status(200).json({
@@ -48,9 +40,9 @@ function buscarClientePorId(req, res) {
     }
 }
 //cadastrar cliente 
-function cadastrarCliente(req, res) {
+async function cadastrarCliente(req, res) {
     try {
-        const novoCliente = clienteService.cadastrarCliente(req.body);
+        const novoCliente = await clienteService.cadastrarCliente(req.body);
         res.status(201).json({
             mensagem: "Cliente cadastrado com sucesso!",
             cliente: novoCliente
@@ -58,17 +50,16 @@ function cadastrarCliente(req, res) {
     }
     catch (error) {
         if (error.message === "Já existe um cliente com esse CPF") {
-            res.status(409).json({ message: error.message });
-            return;
+            return res.status(409).json({ message: error.message });
         }
         res.status(400).json({ message: error.message });
     }
 }
 //atualizar cliente
-function atualizarCliente(req, res) {
+async function atualizarCliente(req, res) {
     try {
         const id = Number(req.params.id);
-        const clienteAtualizado = clienteService.atualizarCliente(id, req.body);
+        const clienteAtualizado = await clienteService.atualizarCliente(id, req.body);
         res.status(200).json({
             mensagem: "Cliente atualizado com sucesso!",
             cliente: clienteAtualizado
@@ -76,49 +67,47 @@ function atualizarCliente(req, res) {
     }
     catch (error) {
         if (error.message === "O cliente não foi encontrado") {
-            res.status(404).json({ message: error.message });
-            return;
+            return res.status(404).json({ message: error.message });
         }
         res.status(400).json({ message: error.message });
     }
 }
 //remover cliente
-function removerCliente(req, res) {
+async function removerCliente(req, res) {
     try {
         const id = Number(req.params.id);
-        const clientePesquisado = clienteService.buscarClienteId(id);
+        const clientePesquisado = await clienteService.buscarClienteId(id);
         if (!clientePesquisado) {
             res.status(404).json({
-                mensagem: "Cliente não encontrado"
+                mensagem: "Cliente não encontrado",
+                cliente: clientePesquisado
             });
             return;
         }
-        const clienteRemovido = clienteService.removerCliente(id);
+        await clienteService.removerCliente(id);
         res.status(200).json({
             mensagem: "Cliente removido com sucesso!",
-            cliente: clienteRemovido
         });
     }
     catch (error) {
         if (error.message === "Não é possível remover cliente com notas fiscais associadas") {
-            res.status(422).json({ message: error.message });
-            return;
+            return res.status(422).json({ message: error.message });
         }
         res.status(400).json({ message: error.message });
     }
 }
 //listar notas fiscais de um cliente
-function listarNotasCliente(req, res) {
+async function listarNotasCliente(req, res) {
     try {
         const id = Number(req.params.id);
-        const cliente = clienteService.buscarClienteId(id);
+        const cliente = await clienteService.buscarClienteId(id);
         if (!cliente) {
             res.status(404).json({
                 mensagem: "Cliente não encontrado"
             });
             return;
         }
-        const notasFiscais = clienteService.listarNotasCliente(id);
+        const notasFiscais = await clienteService.listarNotasCliente(id);
         res.status(200).json({
             mensagem: "Notas fiscais do cliente encontradas com sucesso!",
             notasFiscais: notasFiscais

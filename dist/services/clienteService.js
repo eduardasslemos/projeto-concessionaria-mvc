@@ -8,31 +8,29 @@ class ClienteService {
     clienteRepository = clienteRepository_1.ClienteRepository.getInstance();
     notaFiscalRepository = notaFiscalRepository_1.NotaFiscalRepository.getInstance();
     // listar clientes
-    listarCliente() {
-        return this.clienteRepository.listarCliente();
+    async listarCliente() {
+        return await this.clienteRepository.listarCliente();
     }
     // listar cliente por id
-    buscarClienteId(id) {
-        const idCliente = parseInt(id, 10);
-        return this.clienteRepository.buscarClientePorId(idCliente);
+    async buscarClienteId(id) {
+        return await this.clienteRepository.buscarClientePorId(id);
     }
     // cadastrar cliente, com nome, cpf e telefone obrigatorios, e cpf nao duplicado.
-    cadastrarCliente(clienteData) {
+    async cadastrarCliente(clienteData) {
         const { nome, cpf, telefone, email, cidade } = clienteData;
         if (!nome || !cpf || !telefone) {
             throw new Error("Cliente precisa ter nome, cpf e telefone");
         }
-        if (this.clienteRepository.verficarClientePorCpf(cpf)) {
+        const cpfExistente = await this.clienteRepository.verficarClientePorCpf(cpf);
+        if (cpfExistente) {
             throw new Error("Já existe um cliente com esse CPF");
         }
-        const novoCliente = new Cliente_1.Cliente(nome, cpf, telefone, email, cidade);
-        this.clienteRepository.cadastrarCliente(novoCliente);
-        return novoCliente;
+        const novoCliente = new Cliente_1.Cliente(null, nome, cpf, telefone, email, cidade);
+        return await this.clienteRepository.cadastrarCliente(novoCliente);
     }
     // atualizar dados do cliente.
-    atualizarCliente(id, clienteData) {
-        const idCliente = parseInt(id, 10);
-        const clienteExistente = this.clienteRepository.buscarClientePorId(idCliente);
+    async atualizarCliente(id, clienteData) {
+        const clienteExistente = await this.clienteRepository.buscarClientePorId(id);
         if (!clienteExistente) {
             throw new Error("O cliente não foi encontrado");
         }
@@ -40,24 +38,36 @@ class ClienteService {
         if (!nome || !cpf || !telefone) {
             throw new Error("Cliente precisa ter nome, cpf e telefone");
         }
-        const clienteAtualizado = new Cliente_1.Cliente(nome, cpf, telefone, email, cidade);
-        clienteAtualizado.id_cliente = idCliente;
-        this.clienteRepository.atualizarDadosCliente(idCliente, clienteAtualizado);
-        return clienteAtualizado;
+        const cpfExistente = await this.clienteRepository.verficarClientePorCpf(cpf);
+        if (cpfExistente && cpfExistente.id_cliente !== Number(id)) {
+            throw new Error("Já existe um cliente com esse CPF");
+        }
+        const clienteObjeto = new Cliente_1.Cliente(id, nome, cpf, telefone, email, cidade);
+        const clienteSalvo = await this.clienteRepository.atualizarDadosCliente(id, clienteObjeto);
+        if (!clienteSalvo) {
+            throw new Error("Erro ao atualizar os dados do cliente");
+        }
+        return clienteSalvo;
     }
     // remover cliente, somente se não tiver nota fiscal associada.
-    removerCliente(id) {
-        const idCliente = parseInt(id, 10);
-        const notasCliente = this.notaFiscalRepository.listaNotasPorCliente(idCliente);
+    async removerCliente(id) {
+        const clienteExistente = await this.clienteRepository.buscarClientePorId(id);
+        if (!clienteExistente) {
+            throw new Error("Cliente nao encontrado");
+        }
+        const notasCliente = await this.notaFiscalRepository.listaNotasPorCliente(id);
         if (notasCliente.length > 0) {
             throw new Error("Não é possível remover cliente com notas fiscais associadas");
         }
-        return this.clienteRepository.removeCliente(idCliente);
+        const clienteRemovido = await this.clienteRepository.removeCliente(id);
+        if (!clienteRemovido) {
+            throw new Error("Erro ao remover o cliente");
+        }
+        return clienteRemovido;
     }
     // listar todas as notas fiscais de um cliente
-    listarNotasCliente(id) {
-        const idCliente = parseInt(id, 10);
-        return this.notaFiscalRepository.listaNotasPorCliente(idCliente);
+    async listarNotasCliente(id) {
+        return await this.notaFiscalRepository.listaNotasPorCliente(id);
     }
 }
 exports.ClienteService = ClienteService;

@@ -8,9 +8,10 @@ exports.inicializarBanco = inicializarBanco;
 const mysql2_1 = __importDefault(require("mysql2"));
 // Entra os repositorios
 const carroRepository_1 = require("../repositories/carroRepository");
-//import { EstoqueRepository } from "../repositories/estoqueRepository";
+const estoqueRepository_1 = require("../repositories/estoqueRepository");
 const vendedorRepository_1 = require("../repositories/vendedorRepository");
 const notaFiscalRepository_1 = require("../repositories/notaFiscalRepository");
+const clienteRepository_1 = require("../repositories/clienteRepository");
 const dbConfig = {
     host: "localhost",
     port: 3306,
@@ -43,7 +44,8 @@ async function inicializarBanco() {
     const schemas = [
         // Quando criarmos os repositories, ficará assim:
         carroRepository_1.CarroRepository.getCreateTableQuery(),
-        //EstoqueRepository.getCreateTableQuery(),
+        clienteRepository_1.ClienteRepository.getCreateTableQuery(),
+        estoqueRepository_1.EstoqueRepository.getCreateTableQuery(),
         vendedorRepository_1.VendedorRepository.getCreateTableQuery(),
         notaFiscalRepository_1.NotaFiscalRepository.getCreateTableQuery(),
     ];

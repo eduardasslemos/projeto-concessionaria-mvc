@@ -2,7 +2,7 @@ import mysql, { Connection, QueryError } from "mysql2";
 
 // Entra os repositorios
 import { CarroRepository } from "../repositories/carroRepository";
-//import { EstoqueRepository } from "../repositories/estoqueRepository";
+import { EstoqueRepository } from "../repositories/estoqueRepository";
 import { VendedorRepository } from "../repositories/vendedorRepository";
 import { NotaFiscalRepository } from "../repositories/notaFiscalRepository";
 import { ClienteRepository } from "../repositories/clienteRepository";
@@ -47,7 +47,7 @@ export async function inicializarBanco(): Promise<void> {
     // Quando criarmos os repositories, ficará assim:
     CarroRepository.getCreateTableQuery(),
     ClienteRepository.getCreateTableQuery(),
-    //EstoqueRepository.getCreateTableQuery(),
+    EstoqueRepository.getCreateTableQuery(),
     VendedorRepository.getCreateTableQuery(),
     NotaFiscalRepository.getCreateTableQuery(),
     

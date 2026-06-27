@@ -11,6 +11,7 @@ const carroRepository_1 = require("../repositories/carroRepository");
 //import { EstoqueRepository } from "../repositories/estoqueRepository";
 const vendedorRepository_1 = require("../repositories/vendedorRepository");
 const notaFiscalRepository_1 = require("../repositories/notaFiscalRepository");
+const { ClientRequest } = require("node:http");
 const dbConfig = {
     host: "localhost",
     port: 3306,
@@ -43,7 +44,7 @@ async function inicializarBanco() {
     const schemas = [
         // Quando criarmos os repositories, ficará assim:
         carroRepository_1.CarroRepository.getCreateTableQuery(),
-        //EstoqueRepository.getCreateTableQuery(),
+        clienteRepository_1.ClienteRepository.getCreateTableQuery(),        //EstoqueRepository.getCreateTableQuery(),
         vendedorRepository_1.VendedorRepository.getCreateTableQuery(),
         notaFiscalRepository_1.NotaFiscalRepository.getCreateTableQuery(),
     ];

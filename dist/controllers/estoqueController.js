@@ -130,10 +130,7 @@ async function removerEstoque(req, res) {
             return;
         }
         const estoqueRemovido = await estoqueService.removerEstoque(id);
-        res.status(200).json({
-            message: "Estoque removido com sucesso",
-            estoque: estoqueRemovido,
-        });
+        res.status(200).json(estoqueRemovido);
     }
     catch (error) {
         if (error.message.includes("não encontrado")) {

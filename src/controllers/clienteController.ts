@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ClienteService } from "../services/clienteService";
+import { Cliente } from "../models/Cliente";
 
      const clienteService = new ClienteService();
 
@@ -8,12 +9,7 @@ import { ClienteService } from "../services/clienteService";
         try {
             const clientes = await clienteService.listarCliente();
 
-            res.status(200).json(
-            {
-            mensagem : "Clientes encontrados com sucesso!", 
-            cliente: clientes
-            }
-            ); 
+            res.status(200).json(clientes); 
 
             } catch (error: any) {
                 res.status(400).json({ mensagem: error.message });
@@ -31,12 +27,7 @@ import { ClienteService } from "../services/clienteService";
                 res.status(404).json({mensagem: "Cliente não encontrado"});
                 return;
             }
-            res.status(200).json(
-            {
-            mensagem: "Cliente encontrado com sucesso!",
-            cliente: clienteId
-            }
-            );
+            res.status(200).json(clienteId);
         } catch (error: any) {
             res.status(400).json({message: error.message});
         }
@@ -47,13 +38,9 @@ import { ClienteService } from "../services/clienteService";
          try {
              const novoCliente = await clienteService.cadastrarCliente(req.body);
 
-             res.status(201).json(
-            {
-            mensagem: "Cliente cadastrado com sucesso!",
-            cliente: novoCliente
-            }
-            );
-    } catch (error: any) {
+             res.status(201).json(novoCliente);
+
+        } catch (error: any) {
         if (error.message === "Já existe um cliente com esse CPF") {
             return res.status(409).json({ message: error.message });
         }
@@ -67,12 +54,8 @@ import { ClienteService } from "../services/clienteService";
             const id = Number(req.params.id);
             const clienteAtualizado = await clienteService.atualizarCliente(id, req.body);
 
-            res.status(200).json(
-            {
-            mensagem: "Cliente atualizado com sucesso!",
-            cliente: clienteAtualizado
-            }
-            );
+            res.status(200).json(clienteAtualizado);
+            
         } catch (error: any) {
             if (error.message === "O cliente não foi encontrado") {
                 return res.status(404).json({message: error.message});
@@ -92,18 +75,14 @@ import { ClienteService } from "../services/clienteService";
             if(!clientePesquisado){
                 res.status(404).json({
                     mensagem: "Cliente não encontrado",
-                    cliente: clientePesquisado
                 });
                 return;
             }
 
-            await clienteService.removerCliente(id);
+            const clienteRemovido = await clienteService.removerCliente(id);
 
-            res.status(200).json(
-            {
-            mensagem: "Cliente removido com sucesso!",
-            }
-            )
+            res.status(200).json(clienteRemovido)
+
         }catch (error: any){
             if(error.message === "Não é possível remover cliente com notas fiscais associadas"){
                 return res.status(422).json({message: error.message});
@@ -128,12 +107,7 @@ import { ClienteService } from "../services/clienteService";
             }
 
             const notasFiscais = await clienteService.listarNotasCliente(id);
-            res.status(200).json(
-            {
-            mensagem: "Notas fiscais do cliente encontradas com sucesso!",
-            notasFiscais: notasFiscais
-            }
-            );
+            res.status(200).json( notasFiscais);
         }catch (error: any) {
             res.status(400).json({message: error.message});
         }

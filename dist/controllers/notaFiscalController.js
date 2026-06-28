@@ -9,17 +9,7 @@ const notaFiscalService = new notaFiscalService_1.NotaFiscalService();
 async function listaNotasFiscais(req, res) {
     try {
         const notasFiscais = await notaFiscalService.listaNotasFiscais();
-        if (notasFiscais.length === 0) {
-            res.status(200).json({
-                mensagem: "Lista vazia",
-                notasFiscais: notasFiscais
-            });
-            return;
-        }
-        res.status(200).json({
-            mensagem: "Notas fiscais encontradas com sucesso!",
-            notasFiscais: notasFiscais
-        });
+        res.status(200).json(notasFiscais);
     }
     catch (error) {
         res.status(400).json({ message: error.message });
@@ -37,10 +27,7 @@ async function pesquisarNotaPorId(req, res) {
             });
             return;
         }
-        res.status(200).json({
-            mensagem: "Nota fiscal encontrada com sucesso!",
-            notaFiscal: notaPesquisada
-        });
+        res.status(200).json(notaPesquisada);
     }
     catch (error) {
         res.status(400).json({ message: error.message });
@@ -51,10 +38,7 @@ async function pesquisarNotaPorId(req, res) {
 async function cadastrarNotaFiscal(req, res) {
     try {
         const novaNota = await notaFiscalService.cadastrarNotaFiscal(req.body);
-        res.status(201).json({
-            mensagem: "Nota fiscal adicionado com sucesso!",
-            notaFiscal: novaNota
-        });
+        res.status(201).json(novaNota);
     }
     catch (error) {
         if (error.message == "Já existe uma nota fiscal com esse número") {

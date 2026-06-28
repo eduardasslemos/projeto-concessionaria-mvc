@@ -64,6 +64,9 @@ export async function cadastrarCarro(req: Request, res: Response) {
     return res.status(201).json(novoCarro);
   } catch (error) {
     if (error instanceof Error) {
+      if (error.message === "Já existe um carro com essa placa") {
+        return res.status(409).json({ erro: error.message });
+      }
       return res.status(400).json({
         erro: error.message,
       });
@@ -97,6 +100,12 @@ export async function atualizarCarro(req: Request, res: Response) {
         });
       }
 
+      if (error.message === "Já existe um carro com essa placa") {
+        return res.status(409).json({
+          erro: error.message
+        });
+      }
+
       return res.status(400).json({
         erro: error.message,
       });
@@ -121,16 +130,20 @@ export async function removerCarro(req: Request, res: Response) {
 
     const carroRemovido = await carroService.removerCarro(id);
 
-    return res.status(200).json({
-      mensagem: "Carro removido com sucesso",
-      carro: carroRemovido,
-    });
+    return res.status(200).json(carroRemovido);
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === "Carro não encontrado") {
         return res.status(404).json({
           erro: error.message,
         });
+      }
+
+      if (
+        error.message === "Não se pode remover carro com estoque vinculado" ||
+        error.message === "Não se pode remover carro com nota fiscal vinculada"
+      ) {
+        return res.status(422).json({ erro: error.message });
       }
 
       return res.status(400).json({

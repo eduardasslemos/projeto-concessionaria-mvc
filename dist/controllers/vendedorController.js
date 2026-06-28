@@ -12,10 +12,7 @@ const vendedorService = new vendedorService_1.VendedorService();
 async function listaVendedores(req, res) {
     try {
         const vendedores = await vendedorService.listaVendedores();
-        res.status(200).json({
-            mensagem: "Vendedores encontrados com sucesso!",
-            vendedores: vendedores
-        });
+        return res.status(200).json(vendedores);
     }
     catch (error) {
         res.status(400).json({ message: error.message });
@@ -33,10 +30,7 @@ async function pesquisarVendedorPorId(req, res) {
             });
             return;
         }
-        res.status(200).json({
-            mensagem: "Vendedor encontrado com sucesso!",
-            vendedor: vendedorPesquisado
-        });
+        return res.status(200).json(vendedorPesquisado);
     }
     catch (error) {
         res.status(400).json({ message: error.message });
@@ -47,10 +41,7 @@ async function pesquisarVendedorPorId(req, res) {
 async function cadastrarVendedor(req, res) {
     try {
         const novoVendedor = await vendedorService.cadastrarVendedor(req.body);
-        res.status(201).json({
-            mensagem: "Vendedor adicionado com sucesso!",
-            vendedor: novoVendedor
-        });
+        return res.status(201).json(novoVendedor);
     }
     catch (error) {
         if (error.message == "Já existe um vendedor com essa matrícula") {
@@ -65,10 +56,7 @@ async function atualizaVendedor(req, res) {
     try {
         let id = Number(req.params.id);
         const vendedor = await vendedorService.atualizaVendedor(id, req.body);
-        res.status(200).json({
-            mensagem: "Vendedor atualizado com sucesso!",
-            vendedor: vendedor
-        });
+        return res.status(200).json(vendedor);
     }
     catch (error) {
         if (error.message == "Vendedor não encontrado") {
@@ -89,10 +77,8 @@ async function removeVendedor(req, res) {
             });
             return;
         }
-        await vendedorService.removeVendedores(id);
-        res.status(200).json({
-            mensagem: "Vendedor removido com sucesso!",
-        });
+        const vendedorRemovido = await vendedorService.removeVendedores(id);
+        res.status(200).json(vendedorRemovido);
     }
     catch (error) {
         if (error.message == "O vendedor possui notas fiscais vinculadas a ele e não pode ser excluído") {
@@ -114,10 +100,7 @@ async function listaNotas(req, res) {
             return;
         }
         const notasFiscais = await vendedorService.listaNotasFiscais(id);
-        res.status(200).json({
-            mensagem: "Notas fiscais do vendedor encontradas com sucesso!",
-            notasFiscais: notasFiscais
-        });
+        res.status(200).json(notasFiscais);
     }
     catch (error) {
         res.status(400).json({ message: error.message });

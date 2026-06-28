@@ -30,7 +30,7 @@ router.put("/carros/:id", carroController_1.atualizarCarro);
 router.delete("/carros/:id", carroController_1.removerCarro);
 // Rotas estoque
 router.get("/estoque", estoqueController_1.listarEstoque);
-router.get("/estoque/carros/:id_carro", estoqueController_1.buscarPorCarro);
+router.get("/estoque/carro/:id_carro", estoqueController_1.buscarPorCarro);
 router.get("/estoque/:id", estoqueController_1.buscarEstoquePorId);
 router.post("/estoque", estoqueController_1.cadastrarEstoque);
 router.put("/estoque/:id", estoqueController_1.atualizarEstoque);

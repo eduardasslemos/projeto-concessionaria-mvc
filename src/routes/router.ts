@@ -38,7 +38,7 @@ router.delete("/carros/:id", removerCarro);
 
 // Rotas estoque
 router.get("/estoque", listarEstoque);
-router.get("/estoque/carros/:id_carro", buscarPorCarro);
+router.get("/estoque/carro/:id_carro", buscarPorCarro);
 router.get("/estoque/:id", buscarEstoquePorId);
 router.post("/estoque", cadastrarEstoque);
 router.put("/estoque/:id", atualizarEstoque);
